@@ -1,0 +1,9 @@
+Signal
+============================================
+
+.. currentmodule:: qf_lib.backtesting.alpha_model.signal
+
+.. autoclass:: Signal
+	:show-inheritance:
+	:autosummary:
+	:members:

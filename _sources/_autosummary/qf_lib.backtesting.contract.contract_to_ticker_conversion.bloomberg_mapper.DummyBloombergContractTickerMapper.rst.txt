@@ -1,0 +1,9 @@
+DummyBloombergContractTickerMapper
+=============================================================================================================
+
+.. currentmodule:: qf_lib.backtesting.contract.contract_to_ticker_conversion.bloomberg_mapper
+
+.. autoclass:: DummyBloombergContractTickerMapper
+	:show-inheritance:
+	:autosummary:
+	:members:

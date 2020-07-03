@@ -1,0 +1,9 @@
+VolumeShareSlippage
+=======================================================================================
+
+.. currentmodule:: qf_lib.backtesting.execution_handler.slippage.volume_share_slippage
+
+.. autoclass:: VolumeShareSlippage
+	:show-inheritance:
+	:autosummary:
+	:members:

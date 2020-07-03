@@ -1,0 +1,9 @@
+TradeField
+==========================================
+
+.. currentmodule:: qf_lib.common.enums.trade_field
+
+.. autoclass:: TradeField
+	:show-inheritance:
+	:autosummary:
+	:members:

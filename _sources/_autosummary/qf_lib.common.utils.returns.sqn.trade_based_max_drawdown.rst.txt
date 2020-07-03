@@ -1,0 +1,6 @@
+trade_based_max_drawdown
+========================================================
+
+.. currentmodule:: qf_lib.common.utils.returns.sqn
+
+.. autofunction:: trade_based_max_drawdown

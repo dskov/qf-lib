@@ -1,0 +1,426 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>qf_lib.backtesting.portfolio.portfolio &mdash; QF Lib  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home" alt="Documentation Home"> QF Lib
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../analysis.html">analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../backtesting.html">backtesting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../common.html">common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../containers.html">containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../data_providers.html">data_providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../document_utils.html">document_utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plotting.html">plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../indicators.html">indicators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../portfolio_construction.html">portfolio_construction</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">QF Lib</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>qf_lib.backtesting.portfolio.portfolio</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for qf_lib.backtesting.portfolio.portfolio</h1><div class="highlight"><pre>
+<span></span><span class="c1">#     Copyright 2016-present CERN – European Organization for Nuclear Research</span>
+<span class="c1">#</span>
+<span class="c1">#     Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1">#     you may not use this file except in compliance with the License.</span>
+<span class="c1">#     You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#         http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1">#     Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1">#     distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1">#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1">#     See the License for the specific language governing permissions and</span>
+<span class="c1">#     limitations under the License.</span>
+
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">sign</span>
+
+<span class="kn">from</span> <span class="nn">qf_lib.backtesting.contract.contract</span> <span class="kn">import</span> <span class="n">Contract</span>
+<span class="kn">from</span> <span class="nn">qf_lib.backtesting.contract.contract_to_ticker_conversion.base</span> <span class="kn">import</span> <span class="n">ContractTickerMapper</span>
+<span class="kn">from</span> <span class="nn">qf_lib.backtesting.data_handler.data_handler</span> <span class="kn">import</span> <span class="n">DataHandler</span>
+<span class="kn">from</span> <span class="nn">qf_lib.backtesting.portfolio.backtest_position</span> <span class="kn">import</span> <span class="n">BacktestPosition</span>
+<span class="kn">from</span> <span class="nn">qf_lib.backtesting.portfolio.position_factory</span> <span class="kn">import</span> <span class="n">BacktestPositionFactory</span>
+<span class="kn">from</span> <span class="nn">qf_lib.backtesting.portfolio.trade</span> <span class="kn">import</span> <span class="n">Trade</span>
+<span class="kn">from</span> <span class="nn">qf_lib.backtesting.portfolio.transaction</span> <span class="kn">import</span> <span class="n">Transaction</span>
+<span class="kn">from</span> <span class="nn">qf_lib.common.utils.dateutils.timer</span> <span class="kn">import</span> <span class="n">Timer</span>
+<span class="kn">from</span> <span class="nn">qf_lib.common.utils.logging.qf_parent_logger</span> <span class="kn">import</span> <span class="n">qf_logger</span>
+<span class="kn">from</span> <span class="nn">qf_lib.containers.dataframe.qf_dataframe</span> <span class="kn">import</span> <span class="n">QFDataFrame</span>
+<span class="kn">from</span> <span class="nn">qf_lib.containers.series.prices_series</span> <span class="kn">import</span> <span class="n">PricesSeries</span>
+<span class="kn">from</span> <span class="nn">qf_lib.containers.series.qf_series</span> <span class="kn">import</span> <span class="n">QFSeries</span>
+
+
+<div class="viewcode-block" id="Portfolio"><a class="viewcode-back" href="../../../../_autosummary/qf_lib.backtesting.portfolio.portfolio.Portfolio.html#qf_lib.backtesting.portfolio.portfolio.Portfolio">[docs]</a><span class="k">class</span> <span class="nc">Portfolio</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_handler</span><span class="p">:</span> <span class="n">DataHandler</span><span class="p">,</span> <span class="n">initial_cash</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">timer</span><span class="p">:</span> <span class="n">Timer</span><span class="p">,</span>
+                 <span class="n">contract_ticker_mapper</span><span class="p">:</span> <span class="n">ContractTickerMapper</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        On creation, the Portfolio object contains no positions and all values are &quot;reset&quot; to the initial</span>
+<span class="sd">        cash, with no PnL.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_cash</span> <span class="o">=</span> <span class="n">initial_cash</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_handler</span> <span class="o">=</span> <span class="n">data_handler</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="n">timer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">contract_ticker_mapper</span> <span class="o">=</span> <span class="n">contract_ticker_mapper</span>
+
+        <span class="sd">&quot;&quot;&quot;cash value includes futures P&amp;L + stock value + securities options value + bond value + fund value.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">net_liquidation</span> <span class="o">=</span> <span class="n">initial_cash</span>
+
+        <span class="sd">&quot;&quot;&quot;equals the sum of the absolute value of all positions except cash &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gross_exposure_of_positions</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="sd">&quot;&quot;&quot;represents the free cash in the portfolio. Part of the cash might be use for margin&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_cash</span> <span class="o">=</span> <span class="n">initial_cash</span>
+
+        <span class="sd">&quot;&quot;&quot;represents all open positions at the moment&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">open_positions_dict</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># type: Dict[Contract, BacktestPosition]</span>
+
+        <span class="c1"># dates and portfolio values are keep separately because it is inefficient to append to the QFSeries</span>
+        <span class="c1"># use get_portfolio_timeseries() to get them as a series.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dates</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># type: List[datetime]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_portfolio_values</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># type: List[float]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_leverage_list</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># type: List[float]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_transactions</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># type: List[Transaction]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_trades</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># type: List[Trade]</span>
+
+        <span class="c1"># A list containing dictionaries with summarized assets information (contains a mapping from</span>
+        <span class="c1"># contracts to market value at the specific time)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">positions_history</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">qf_logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Portfolio.transact_transaction"><a class="viewcode-back" href="../../../../_autosummary/qf_lib.backtesting.portfolio.portfolio.Portfolio.html#qf_lib.backtesting.portfolio.portfolio.Portfolio.transact_transaction">[docs]</a>    <span class="k">def</span> <span class="nf">transact_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="p">:</span> <span class="n">Transaction</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adjusts positions to account for a transaction.</span>
+<span class="sd">        Handles any new position or modification to a current position</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_transactions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">transaction</span><span class="p">)</span>
+        <span class="n">transaction_cost</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="n">existing_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_positions_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">transaction</span><span class="o">.</span><span class="n">contract</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">existing_position</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># open new, empty position</span>
+            <span class="n">new_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_new_position</span><span class="p">(</span><span class="n">transaction</span><span class="p">)</span>
+            <span class="n">transaction_cost</span> <span class="o">+=</span> <span class="n">new_position</span><span class="o">.</span><span class="n">transact_transaction</span><span class="p">(</span><span class="n">transaction</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># there is already an existing position</span>
+            <span class="n">results_in_opposite_direction</span><span class="p">,</span> <span class="n">basic_transaction</span><span class="p">,</span> <span class="n">remaining_transaction</span> \
+                <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_split_if_results_in_opposite_direction</span><span class="p">(</span><span class="n">existing_position</span><span class="p">,</span> <span class="n">transaction</span><span class="p">)</span>
+
+            <span class="c1"># Check if the basic_transaction would result in a trade and if so - record the trade</span>
+            <span class="n">potential_trade</span> <span class="o">=</span> <span class="n">existing_position</span><span class="o">.</span><span class="n">check_if_transaction_generates_trade</span><span class="p">(</span><span class="n">basic_transaction</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">potential_trade</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_trades</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">potential_trade</span><span class="p">)</span>
+
+            <span class="n">transaction_cost</span> <span class="o">+=</span> <span class="n">existing_position</span><span class="o">.</span><span class="n">transact_transaction</span><span class="p">(</span><span class="n">basic_transaction</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">existing_position</span><span class="o">.</span><span class="n">is_closed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">open_positions_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">transaction</span><span class="o">.</span><span class="n">contract</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">results_in_opposite_direction</span><span class="p">:</span>  <span class="c1"># means we were going from Long to Short in one transaction</span>
+                <span class="n">new_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_new_position</span><span class="p">(</span><span class="n">remaining_transaction</span><span class="p">)</span>
+                <span class="n">transaction_cost</span> <span class="o">+=</span> <span class="n">new_position</span><span class="o">.</span><span class="n">transact_transaction</span><span class="p">(</span><span class="n">remaining_transaction</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_cash</span> <span class="o">+=</span> <span class="n">transaction_cost</span></div>
+
+<div class="viewcode-block" id="Portfolio.update"><a class="viewcode-back" href="../../../../_autosummary/qf_lib.backtesting.portfolio.portfolio.Portfolio.html#qf_lib.backtesting.portfolio.portfolio.Portfolio.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the value of all positions that are currently open by getting the most recent price.</span>
+<span class="sd">        The function is called at the end of the day (after market close) and after each executed trade.</span>
+<span class="sd">        If the flag record is set to True, it records the current assets values and the portfolio value (this is</span>
+<span class="sd">        performed once per day, after the market close).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">net_liquidation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_cash</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gross_exposure_of_positions</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">contracts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_positions_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="n">contract_to_ticker_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">contract</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">contract_ticker_mapper</span><span class="o">.</span><span class="n">contract_to_ticker</span><span class="p">(</span><span class="n">contract</span><span class="p">)</span> <span class="k">for</span> <span class="n">contract</span> <span class="ow">in</span> <span class="n">contracts</span><span class="p">}</span>
+
+        <span class="n">all_tickers_in_portfolio</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">contract_to_ticker_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">current_prices_series</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_handler</span><span class="o">.</span><span class="n">get_last_available_price</span><span class="p">(</span><span class="n">tickers</span><span class="o">=</span><span class="n">all_tickers_in_portfolio</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_remove_positions_acquired_or_not_active_positions</span><span class="p">(</span><span class="n">contract_to_ticker_dict</span><span class="p">,</span> <span class="n">current_prices_series</span><span class="p">)</span>
+
+        <span class="n">current_positions</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">contract</span><span class="p">,</span> <span class="n">position</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_positions_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">ticker</span> <span class="o">=</span> <span class="n">contract_to_ticker_dict</span><span class="p">[</span><span class="n">contract</span><span class="p">]</span>
+            <span class="n">security_price</span> <span class="o">=</span> <span class="n">current_prices_series</span><span class="p">[</span><span class="n">ticker</span><span class="p">]</span>
+            <span class="n">position</span><span class="o">.</span><span class="n">update_price</span><span class="p">(</span><span class="n">bid_price</span><span class="o">=</span><span class="n">security_price</span><span class="p">,</span> <span class="n">ask_price</span><span class="o">=</span><span class="n">security_price</span><span class="p">)</span>
+            <span class="n">position_value</span> <span class="o">=</span> <span class="n">position</span><span class="o">.</span><span class="n">market_value</span><span class="p">()</span>
+            <span class="n">position_exposure</span> <span class="o">=</span> <span class="n">position</span><span class="o">.</span><span class="n">total_exposure</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">net_liquidation</span> <span class="o">+=</span> <span class="n">position_value</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gross_exposure_of_positions</span> <span class="o">+=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">position_exposure</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">record</span><span class="p">:</span>
+                <span class="n">current_positions</span><span class="p">[</span><span class="n">contract</span><span class="p">]</span> <span class="o">=</span> <span class="n">position_exposure</span>
+
+        <span class="k">if</span> <span class="n">record</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_dates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_portfolio_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">net_liquidation</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_leverage_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_exposure_of_positions</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">net_liquidation</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">positions_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_positions</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_remove_positions_acquired_or_not_active_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contract_to_ticker_dict</span><span class="p">,</span> <span class="n">current_prices_series</span><span class="p">):</span>
+        <span class="n">contracts_to_be_removed</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_positions_dict</span>
+                                   <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">current_prices_series</span><span class="p">[</span><span class="n">contract_to_ticker_dict</span><span class="p">[</span><span class="n">c</span><span class="p">]])]</span>
+        <span class="k">for</span> <span class="n">contract</span> <span class="ow">in</span> <span class="n">contracts_to_be_removed</span><span class="p">:</span>
+            <span class="n">position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_positions_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">contract</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_cash</span> <span class="o">+=</span> <span class="n">position</span><span class="o">.</span><span class="n">market_value</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">net_liquidation</span> <span class="o">+=</span> <span class="n">position</span><span class="o">.</span><span class="n">market_value</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">: position assigned to Ticker </span><span class="si">{}</span><span class="s2"> removed due to incomplete price data.&quot;</span>
+                                <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">now</span><span class="p">()),</span> <span class="n">contract</span><span class="o">.</span><span class="n">symbol</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Portfolio.portfolio_eod_series"><a class="viewcode-back" href="../../../../_autosummary/qf_lib.backtesting.portfolio.portfolio.Portfolio.html#qf_lib.backtesting.portfolio.portfolio.Portfolio.portfolio_eod_series">[docs]</a>    <span class="k">def</span> <span class="nf">portfolio_eod_series</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PricesSeries</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a timeseries of value of the portfolio expressed in currency units</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">end_of_day_date</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">datetime</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">day</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dates</span><span class="p">))</span>  <span class="c1"># remove time component</span>
+        <span class="n">portfolio_timeseries</span> <span class="o">=</span> <span class="n">PricesSeries</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_portfolio_values</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">end_of_day_date</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">portfolio_timeseries</span></div>
+
+<div class="viewcode-block" id="Portfolio.trade_list"><a class="viewcode-back" href="../../../../_autosummary/qf_lib.backtesting.portfolio.portfolio.Portfolio.html#qf_lib.backtesting.portfolio.portfolio.Portfolio.trade_list">[docs]</a>    <span class="k">def</span> <span class="nf">trade_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Trade</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a list of Trades</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trades</span></div>
+
+<div class="viewcode-block" id="Portfolio.leverage_series"><a class="viewcode-back" href="../../../../_autosummary/qf_lib.backtesting.portfolio.portfolio.Portfolio.html#qf_lib.backtesting.portfolio.portfolio.Portfolio.leverage_series">[docs]</a>    <span class="k">def</span> <span class="nf">leverage_series</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QFSeries</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Leverage = GrossPositionValue / NetLiquidation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">QFSeries</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_leverage_list</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dates</span><span class="p">)</span>  <span class="c1"># type: QFSeries</span></div>
+
+<div class="viewcode-block" id="Portfolio.positions_eod_history"><a class="viewcode-back" href="../../../../_autosummary/qf_lib.backtesting.portfolio.portfolio.Portfolio.html#qf_lib.backtesting.portfolio.portfolio.Portfolio.positions_eod_history">[docs]</a>    <span class="k">def</span> <span class="nf">positions_eod_history</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QFDataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a QFDataFrame containing exposure of the positions in the portfolio for each day.</span>
+<span class="sd">        each day contains a dict [contract -&gt; exposure]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">end_of_day_date</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">datetime</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">day</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dates</span><span class="p">))</span>  <span class="c1"># remove time component</span>
+        <span class="k">return</span> <span class="n">QFDataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">positions_history</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">end_of_day_date</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Portfolio.transactions_series"><a class="viewcode-back" href="../../../../_autosummary/qf_lib.backtesting.portfolio.portfolio.Portfolio.html#qf_lib.backtesting.portfolio.portfolio.Portfolio.transactions_series">[docs]</a>    <span class="k">def</span> <span class="nf">transactions_series</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QFSeries</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a time series of transactions. It will have multiple entries with the same value of the</span>
+<span class="sd">        index in more then one transaction occurred on the same day</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">time_index</span> <span class="o">=</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">time</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transactions</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">QFSeries</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_transactions</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">time_index</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_split_if_results_in_opposite_direction</span><span class="p">(</span><span class="n">existing_position</span><span class="p">:</span> <span class="n">BacktestPosition</span><span class="p">,</span> <span class="n">transaction</span><span class="p">:</span> <span class="n">Transaction</span><span class="p">)</span> \
+            <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Transaction</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Transaction</span><span class="p">]]:</span>
+
+        <span class="n">existing_quantity</span> <span class="o">=</span> <span class="n">existing_position</span><span class="o">.</span><span class="n">quantity</span><span class="p">()</span>
+        <span class="n">sign_before</span> <span class="o">=</span> <span class="n">sign</span><span class="p">(</span><span class="n">existing_quantity</span><span class="p">)</span>
+        <span class="n">sign_after</span> <span class="o">=</span> <span class="n">sign</span><span class="p">(</span><span class="n">existing_quantity</span> <span class="o">+</span> <span class="n">transaction</span><span class="o">.</span><span class="n">quantity</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">sign_before</span> <span class="o">*</span> <span class="n">sign_after</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># split transaction into two transactions</span>
+            <span class="c1"># 1. close existing position</span>
+            <span class="c1"># 2. open new position with the remaining part</span>
+            <span class="n">closing_quantity</span> <span class="o">=</span> <span class="o">-</span><span class="n">existing_quantity</span>
+
+            <span class="n">closing_transaction</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">transaction</span><span class="p">)</span>
+            <span class="n">closing_transaction</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="n">closing_quantity</span>
+            <span class="n">closing_transaction</span><span class="o">.</span><span class="n">commission</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">commission</span> <span class="o">*</span> <span class="p">(</span><span class="n">closing_quantity</span> <span class="o">/</span> <span class="n">transaction</span><span class="o">.</span><span class="n">quantity</span><span class="p">)</span>
+
+            <span class="n">remaining_quantity</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">quantity</span> <span class="o">-</span> <span class="n">closing_quantity</span>
+            <span class="n">remaining_transaction</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">transaction</span><span class="p">)</span>
+            <span class="n">remaining_transaction</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="n">remaining_quantity</span>
+            <span class="n">remaining_transaction</span><span class="o">.</span><span class="n">commission</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">commission</span> <span class="o">*</span> <span class="p">(</span><span class="n">remaining_quantity</span> <span class="o">/</span> <span class="n">transaction</span><span class="o">.</span><span class="n">quantity</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">closing_transaction</span><span class="p">,</span> <span class="n">remaining_transaction</span>
+
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">transaction</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_create_new_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="p">:</span> <span class="n">Transaction</span><span class="p">):</span>
+        <span class="n">new_position</span> <span class="o">=</span> <span class="n">BacktestPositionFactory</span><span class="o">.</span><span class="n">create_position</span><span class="p">(</span><span class="n">transaction</span><span class="o">.</span><span class="n">contract</span><span class="p">,</span> <span class="n">transaction</span><span class="o">.</span><span class="n">time</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">open_positions_dict</span><span class="p">[</span><span class="n">transaction</span><span class="o">.</span><span class="n">contract</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_position</span>
+        <span class="k">return</span> <span class="n">new_position</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

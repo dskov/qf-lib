@@ -1,0 +1,9 @@
+PortfolioTradingSheet
+========================================================================
+
+.. currentmodule:: qf_lib.analysis.tearsheets.portfolio_trading_sheet
+
+.. autoclass:: PortfolioTradingSheet
+	:show-inheritance:
+	:autosummary:
+	:members:

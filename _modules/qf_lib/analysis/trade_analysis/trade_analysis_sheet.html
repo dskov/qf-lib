@@ -1,0 +1,626 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>qf_lib.analysis.trade_analysis.trade_analysis_sheet &mdash; QF Lib  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home" alt="Documentation Home"> QF Lib
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../analysis.html">analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../backtesting.html">backtesting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../common.html">common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../containers.html">containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../data_providers.html">data_providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../document_utils.html">document_utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plotting.html">plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../indicators.html">indicators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../portfolio_construction.html">portfolio_construction</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">QF Lib</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>qf_lib.analysis.trade_analysis.trade_analysis_sheet</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for qf_lib.analysis.trade_analysis.trade_analysis_sheet</h1><div class="highlight"><pre>
+<span></span><span class="c1">#     Copyright 2016-present CERN – European Organization for Nuclear Research</span>
+<span class="c1">#</span>
+<span class="c1">#     Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1">#     you may not use this file except in compliance with the License.</span>
+<span class="c1">#     You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#         http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1">#     Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1">#     distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1">#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1">#     See the License for the specific language governing permissions and</span>
+<span class="c1">#     limitations under the License.</span>
+
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib.ticker</span> <span class="kn">import</span> <span class="n">FormatStrFormatter</span><span class="p">,</span> <span class="n">MaxNLocator</span>
+<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">Timedelta</span><span class="p">,</span> <span class="n">to_timedelta</span>
+
+<span class="kn">from</span> <span class="nn">qf_lib.analysis.error_handling</span> <span class="kn">import</span> <span class="n">ErrorHandling</span>
+<span class="kn">from</span> <span class="nn">qf_lib.backtesting.fast_alpha_model_tester.scenarios_generator</span> <span class="kn">import</span> <span class="n">ScenariosGenerator</span>
+<span class="kn">from</span> <span class="nn">qf_lib.common.enums.plotting_mode</span> <span class="kn">import</span> <span class="n">PlottingMode</span>
+<span class="kn">from</span> <span class="nn">qf_lib.common.enums.trade_field</span> <span class="kn">import</span> <span class="n">TradeField</span>
+<span class="kn">from</span> <span class="nn">qf_lib.common.utils.dateutils.to_days</span> <span class="kn">import</span> <span class="n">to_days</span>
+<span class="kn">from</span> <span class="nn">qf_lib.common.utils.miscellaneous.constants</span> <span class="kn">import</span> <span class="n">DAYS_PER_YEAR_AVG</span>
+<span class="kn">from</span> <span class="nn">qf_lib.common.utils.returns.annualise_total_return</span> <span class="kn">import</span> <span class="n">annualise_total_return</span>
+<span class="kn">from</span> <span class="nn">qf_lib.common.utils.returns.max_drawdown</span> <span class="kn">import</span> <span class="n">max_drawdown</span>
+<span class="kn">from</span> <span class="nn">qf_lib.containers.dataframe.prices_dataframe</span> <span class="kn">import</span> <span class="n">PricesDataFrame</span>
+<span class="kn">from</span> <span class="nn">qf_lib.containers.dataframe.qf_dataframe</span> <span class="kn">import</span> <span class="n">QFDataFrame</span>
+<span class="kn">from</span> <span class="nn">qf_lib.containers.series.simple_returns_series</span> <span class="kn">import</span> <span class="n">SimpleReturnsSeries</span>
+<span class="kn">from</span> <span class="nn">qf_lib.documents_utils.document_exporting.document</span> <span class="kn">import</span> <span class="n">Document</span>
+<span class="kn">from</span> <span class="nn">qf_lib.documents_utils.document_exporting.element.grid</span> <span class="kn">import</span> <span class="n">GridElement</span>
+<span class="kn">from</span> <span class="nn">qf_lib.documents_utils.document_exporting.element.new_page</span> <span class="kn">import</span> <span class="n">NewPageElement</span>
+<span class="kn">from</span> <span class="nn">qf_lib.documents_utils.document_exporting.element.page_header</span> <span class="kn">import</span> <span class="n">PageHeaderElement</span>
+<span class="kn">from</span> <span class="nn">qf_lib.documents_utils.document_exporting.element.paragraph</span> <span class="kn">import</span> <span class="n">ParagraphElement</span>
+<span class="kn">from</span> <span class="nn">qf_lib.documents_utils.document_exporting.element.table</span> <span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">from</span> <span class="nn">qf_lib.documents_utils.document_exporting.pdf_exporter</span> <span class="kn">import</span> <span class="n">PDFExporter</span>
+<span class="kn">from</span> <span class="nn">qf_lib.plotting.charts.chart</span> <span class="kn">import</span> <span class="n">Chart</span>
+<span class="kn">from</span> <span class="nn">qf_lib.plotting.charts.histogram_chart</span> <span class="kn">import</span> <span class="n">HistogramChart</span>
+<span class="kn">from</span> <span class="nn">qf_lib.plotting.charts.line_chart</span> <span class="kn">import</span> <span class="n">LineChart</span>
+<span class="kn">from</span> <span class="nn">qf_lib.plotting.decorators.axes_formatter_decorator</span> <span class="kn">import</span> <span class="n">AxesFormatterDecorator</span>
+<span class="kn">from</span> <span class="nn">qf_lib.plotting.decorators.axes_label_decorator</span> <span class="kn">import</span> <span class="n">AxesLabelDecorator</span>
+<span class="kn">from</span> <span class="nn">qf_lib.plotting.decorators.axes_locator_decorator</span> <span class="kn">import</span> <span class="n">AxesLocatorDecorator</span>
+<span class="kn">from</span> <span class="nn">qf_lib.plotting.decorators.data_element_decorator</span> <span class="kn">import</span> <span class="n">DataElementDecorator</span>
+<span class="kn">from</span> <span class="nn">qf_lib.plotting.decorators.legend_decorator</span> <span class="kn">import</span> <span class="n">LegendDecorator</span>
+<span class="kn">from</span> <span class="nn">qf_lib.plotting.decorators.line_decorators</span> <span class="kn">import</span> <span class="n">HorizontalLineDecorator</span><span class="p">,</span> <span class="n">VerticalLineDecorator</span>
+<span class="kn">from</span> <span class="nn">qf_lib.plotting.decorators.title_decorator</span> <span class="kn">import</span> <span class="n">TitleDecorator</span>
+<span class="kn">from</span> <span class="nn">qf_lib.settings</span> <span class="kn">import</span> <span class="n">Settings</span>
+<span class="kn">from</span> <span class="nn">qf_lib.starting_dir</span> <span class="kn">import</span> <span class="n">get_starting_dir_abs_path</span>
+
+
+<div class="viewcode-block" id="TradeAnalysisSheet"><a class="viewcode-back" href="../../../../_autosummary/qf_lib.analysis.trade_analysis.trade_analysis_sheet.TradeAnalysisSheet.html#qf_lib.analysis.trade_analysis.trade_analysis_sheet.TradeAnalysisSheet">[docs]</a><span class="nd">@ErrorHandling</span><span class="o">.</span><span class="n">class_error_logging</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">TradeAnalysisSheet</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a PDF containing main statistics of the trades.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -------------</span>
+<span class="sd">    settings: Settings</span>
+<span class="sd">        settings of the project</span>
+<span class="sd">    pdf_exporter: PDFExporter</span>
+<span class="sd">        tool that creates the pdf with the result</span>
+<span class="sd">    trades_df: QFDataFrame</span>
+<span class="sd">        indexed by consecutive numbers starting at 0. Columns are indexed using TradeField values</span>
+<span class="sd">    start_date: datetime</span>
+<span class="sd">    end_date: datetime</span>
+<span class="sd">    nr_of_assets_traded: int</span>
+<span class="sd">        the model can be used to trade on many instruments at the same time.</span>
+<span class="sd">        All aggregated trades will be in trades_df</span>
+<span class="sd">        nr_of_instruments_traded informs on how many instruments at the same time the model was traded.</span>
+<span class="sd">    title: str</span>
+<span class="sd">        title of the document, will be a part of the filename. Do not use special characters</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">pdf_exporter</span><span class="p">:</span> <span class="n">PDFExporter</span><span class="p">,</span> <span class="n">trades_df</span><span class="p">:</span> <span class="n">QFDataFrame</span><span class="p">,</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">datetime</span><span class="p">,</span>
+                 <span class="n">end_date</span><span class="p">:</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">nr_of_assets_traded</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Trades&quot;</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">trades_df</span> <span class="o">=</span> <span class="n">trades_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="n">TradeField</span><span class="o">.</span><span class="n">EndDate</span><span class="p">,</span> <span class="n">TradeField</span><span class="o">.</span><span class="n">StartDate</span><span class="p">])</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_date</span> <span class="o">=</span> <span class="n">start_date</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end_date</span> <span class="o">=</span> <span class="n">end_date</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nr_of_assets_traded</span> <span class="o">=</span> <span class="n">nr_of_assets_traded</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">returns_of_trades</span> <span class="o">=</span> <span class="n">SimpleReturnsSeries</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trades_df</span><span class="p">[</span><span class="n">TradeField</span><span class="o">.</span><span class="n">Return</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">returns_of_trades</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Returns of Trades&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">document</span> <span class="o">=</span> <span class="n">Document</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+
+        <span class="c1"># position is linked to the position of axis in tearsheet.mplstyle</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">half_image_size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dpi</span> <span class="o">=</span> <span class="mi">400</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pdf_exporter</span> <span class="o">=</span> <span class="n">pdf_exporter</span>
+
+    <span class="k">def</span> <span class="nf">build_document</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_header</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">add_element</span><span class="p">(</span><span class="n">ParagraphElement</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_histogram_and_cumulative</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_statistics_table</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_long_short_statistics</span><span class="p">()</span>
+
+        <span class="c1"># Next page</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">add_element</span><span class="p">(</span><span class="n">NewPageElement</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_simulation_results</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_add_header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logo_path</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">get_starting_dir_abs_path</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">logo_path</span><span class="p">)</span>
+        <span class="n">company_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">company_name</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">add_element</span><span class="p">(</span><span class="n">PageHeaderElement</span><span class="p">(</span><span class="n">logo_path</span><span class="p">,</span> <span class="n">company_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_add_histogram_and_cumulative</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="n">GridElement</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">PlottingMode</span><span class="o">.</span><span class="n">PDF</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">half_image_size</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dpi</span><span class="p">)</span>
+
+        <span class="n">perf_chart</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_perf_chart</span><span class="p">()</span>
+        <span class="n">grid</span><span class="o">.</span><span class="n">add_chart</span><span class="p">(</span><span class="n">perf_chart</span><span class="p">)</span>
+
+        <span class="n">histogram_chart</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_histogram_chart</span><span class="p">()</span>
+        <span class="n">grid</span><span class="o">.</span><span class="n">add_chart</span><span class="p">(</span><span class="n">histogram_chart</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">add_element</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_perf_chart</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">strategy_tms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">returns_of_trades</span><span class="o">.</span><span class="n">to_prices</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">chart</span> <span class="o">=</span> <span class="n">LineChart</span><span class="p">()</span>
+        <span class="n">line_decorator</span> <span class="o">=</span> <span class="n">HorizontalLineDecorator</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s2">&quot;h_line&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">chart</span><span class="o">.</span><span class="n">add_decorator</span><span class="p">(</span><span class="n">line_decorator</span><span class="p">)</span>
+
+        <span class="n">series_elem</span> <span class="o">=</span> <span class="n">DataElementDecorator</span><span class="p">(</span><span class="n">strategy_tms</span><span class="p">)</span>
+        <span class="n">chart</span><span class="o">.</span><span class="n">add_decorator</span><span class="p">(</span><span class="n">series_elem</span><span class="p">)</span>
+
+        <span class="n">title_decorator</span> <span class="o">=</span> <span class="n">TitleDecorator</span><span class="p">(</span><span class="s2">&quot;Alpha Model Performance&quot;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s2">&quot;title&quot;</span><span class="p">)</span>
+        <span class="n">chart</span><span class="o">.</span><span class="n">add_decorator</span><span class="p">(</span><span class="n">title_decorator</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">chart</span>
+
+    <span class="k">def</span> <span class="nf">_get_histogram_chart</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="n">Chart</span><span class="o">.</span><span class="n">get_axes_colors</span><span class="p">()</span>
+        <span class="n">chart</span> <span class="o">=</span> <span class="n">HistogramChart</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">returns_of_trades</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>  <span class="c1"># expressed in %</span>
+        <span class="c1"># Format the x-axis so that its labels are shown as a percentage.</span>
+        <span class="n">x_axis_formatter</span> <span class="o">=</span> <span class="n">FormatStrFormatter</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.0f%%</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">axes_formatter_decorator</span> <span class="o">=</span> <span class="n">AxesFormatterDecorator</span><span class="p">(</span><span class="n">x_major</span><span class="o">=</span><span class="n">x_axis_formatter</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s2">&quot;axes_formatter&quot;</span><span class="p">)</span>
+        <span class="n">chart</span><span class="o">.</span><span class="n">add_decorator</span><span class="p">(</span><span class="n">axes_formatter_decorator</span><span class="p">)</span>
+        <span class="c1"># Only show whole numbers on the y-axis.</span>
+        <span class="n">y_axis_locator</span> <span class="o">=</span> <span class="n">MaxNLocator</span><span class="p">(</span><span class="n">integer</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">axes_locator_decorator</span> <span class="o">=</span> <span class="n">AxesLocatorDecorator</span><span class="p">(</span><span class="n">y_major</span><span class="o">=</span><span class="n">y_axis_locator</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s2">&quot;axes_locator&quot;</span><span class="p">)</span>
+        <span class="n">chart</span><span class="o">.</span><span class="n">add_decorator</span><span class="p">(</span><span class="n">axes_locator_decorator</span><span class="p">)</span>
+
+        <span class="c1"># Add an average line.</span>
+        <span class="n">avg_line</span> <span class="o">=</span> <span class="n">VerticalLineDecorator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">returns_of_trades</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                                         <span class="n">key</span><span class="o">=</span><span class="s2">&quot;average_line_decorator&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+        <span class="n">chart</span><span class="o">.</span><span class="n">add_decorator</span><span class="p">(</span><span class="n">avg_line</span><span class="p">)</span>
+
+        <span class="c1"># Add a legend.</span>
+        <span class="n">legend</span> <span class="o">=</span> <span class="n">LegendDecorator</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s2">&quot;legend_decorator&quot;</span><span class="p">)</span>
+        <span class="n">legend</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span><span class="n">avg_line</span><span class="p">,</span> <span class="s2">&quot;Mean&quot;</span><span class="p">)</span>
+        <span class="n">chart</span><span class="o">.</span><span class="n">add_decorator</span><span class="p">(</span><span class="n">legend</span><span class="p">)</span>
+
+        <span class="c1"># Add a title.</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">TitleDecorator</span><span class="p">(</span><span class="s2">&quot;Distribution of Trades&quot;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s2">&quot;title_decorator&quot;</span><span class="p">)</span>
+        <span class="n">chart</span><span class="o">.</span><span class="n">add_decorator</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+        <span class="n">chart</span><span class="o">.</span><span class="n">add_decorator</span><span class="p">(</span><span class="n">AxesLabelDecorator</span><span class="p">(</span><span class="s2">&quot;Return&quot;</span><span class="p">,</span> <span class="s2">&quot;Occurrences&quot;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">chart</span>
+
+    <span class="k">def</span> <span class="nf">_add_statistics_table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">column_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;All Trades&quot;</span><span class="p">,</span> <span class="s2">&quot;Value&quot;</span><span class="p">],</span> <span class="n">css_class</span><span class="o">=</span><span class="s2">&quot;table stats-table&quot;</span><span class="p">)</span>
+
+        <span class="n">number_of_trades</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">returns_of_trades</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;Number of trades&quot;</span><span class="p">,</span> <span class="n">number_of_trades</span><span class="p">])</span>
+
+        <span class="n">period_length</span> <span class="o">=</span> <span class="n">Timedelta</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end_date</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_date</span><span class="p">)</span>
+        <span class="n">period_length_in_years</span> <span class="o">=</span> <span class="n">to_days</span><span class="p">(</span><span class="n">period_length</span><span class="p">)</span> <span class="o">/</span> <span class="n">DAYS_PER_YEAR_AVG</span>
+        <span class="n">avg_number_of_trades</span> <span class="o">=</span> <span class="n">number_of_trades</span> <span class="o">/</span> <span class="n">period_length_in_years</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">nr_of_assets_traded</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;Avg number of trades per year per asset&quot;</span><span class="p">,</span> <span class="n">avg_number_of_trades</span><span class="p">])</span>
+
+        <span class="n">positive_trades</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">returns_of_trades</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">returns_of_trades</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">negative_trades</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">returns_of_trades</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">returns_of_trades</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">percentage_of_positive</span> <span class="o">=</span> <span class="n">positive_trades</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">/</span> <span class="n">number_of_trades</span>
+        <span class="n">percentage_of_negative</span> <span class="o">=</span> <span class="n">negative_trades</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">/</span> <span class="n">number_of_trades</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">% o</span><span class="s2">f positive trades&quot;</span><span class="p">,</span> <span class="n">percentage_of_positive</span> <span class="o">*</span> <span class="mi">100</span><span class="p">])</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">% o</span><span class="s2">f negative trades&quot;</span><span class="p">,</span> <span class="n">percentage_of_negative</span> <span class="o">*</span> <span class="mi">100</span><span class="p">])</span>
+
+        <span class="n">avg_positive</span> <span class="o">=</span> <span class="n">positive_trades</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">avg_negative</span> <span class="o">=</span> <span class="n">negative_trades</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;Avg positive trade [%]&quot;</span><span class="p">,</span> <span class="n">avg_positive</span> <span class="o">*</span> <span class="mi">100</span><span class="p">])</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;Avg negative trade [%]&quot;</span><span class="p">,</span> <span class="n">avg_negative</span> <span class="o">*</span> <span class="mi">100</span><span class="p">])</span>
+
+        <span class="n">best_return</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">returns_of_trades</span><span class="p">)</span>
+        <span class="n">worst_return</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">returns_of_trades</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;Best trade [%]&quot;</span><span class="p">,</span> <span class="n">best_return</span> <span class="o">*</span> <span class="mi">100</span><span class="p">])</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;Worst trade [%]&quot;</span><span class="p">,</span> <span class="n">worst_return</span> <span class="o">*</span> <span class="mi">100</span><span class="p">])</span>
+
+        <span class="n">max_dd</span> <span class="o">=</span> <span class="n">max_drawdown</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">returns_of_trades</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;Max drawdown [%]&quot;</span><span class="p">,</span> <span class="n">max_dd</span> <span class="o">*</span> <span class="mi">100</span><span class="p">])</span>
+
+        <span class="n">prices_tms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">returns_of_trades</span><span class="o">.</span><span class="n">to_prices</span><span class="p">()</span>
+        <span class="n">total_return</span> <span class="o">=</span> <span class="n">prices_tms</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">prices_tms</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;Total return [%]&quot;</span><span class="p">,</span> <span class="n">total_return</span> <span class="o">*</span> <span class="mi">100</span><span class="p">])</span>
+
+        <span class="n">annualised_ret</span> <span class="o">=</span> <span class="n">annualise_total_return</span><span class="p">(</span><span class="n">total_return</span><span class="p">,</span> <span class="n">period_length_in_years</span><span class="p">,</span> <span class="n">SimpleReturnsSeries</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;Annualised return [%]&quot;</span><span class="p">,</span> <span class="n">annualised_ret</span> <span class="o">*</span> <span class="mi">100</span><span class="p">])</span>
+
+        <span class="n">avg_return</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">returns_of_trades</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;Avg return of trade [%]&quot;</span><span class="p">,</span> <span class="n">avg_return</span> <span class="o">*</span> <span class="mi">100</span><span class="p">])</span>
+
+        <span class="n">std_of_returns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">returns_of_trades</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;Std of return of trades [%]&quot;</span><span class="p">,</span> <span class="n">std_of_returns</span> <span class="o">*</span> <span class="mi">100</span><span class="p">])</span>
+
+        <span class="c1"># System Quality Number</span>
+        <span class="n">sqn</span> <span class="o">=</span> <span class="n">avg_return</span> <span class="o">/</span> <span class="n">std_of_returns</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;SQN&quot;</span><span class="p">,</span> <span class="n">sqn</span><span class="p">])</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;SQN for 100 trades&quot;</span><span class="p">,</span> <span class="n">sqn</span> <span class="o">*</span> <span class="mi">10</span><span class="p">])</span>  <span class="c1"># SQN * sqrt(100)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;SQN * Sqrt(avg number of trades per year)&quot;</span><span class="p">,</span> <span class="n">sqn</span> <span class="o">*</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">avg_number_of_trades</span><span class="p">)])</span>
+
+        <span class="c1"># Average duration of a trade (days)</span>
+        <span class="n">trades_duration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trades_df</span><span class="p">[</span><span class="n">TradeField</span><span class="o">.</span><span class="n">EndDate</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">trades_df</span><span class="p">[</span><span class="n">TradeField</span><span class="o">.</span><span class="n">StartDate</span><span class="p">]</span>
+        <span class="n">avg_trades_duration</span> <span class="o">=</span> <span class="n">trades_duration</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="c1"># Extract the number of days from the Timedelta</span>
+        <span class="n">avg_trades_duration</span> <span class="o">=</span> <span class="n">avg_trades_duration</span> <span class="o">/</span> <span class="n">to_timedelta</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;Avg duration of a trade (days)&quot;</span><span class="p">,</span> <span class="n">avg_trades_duration</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">add_element</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_add_long_short_statistics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">def</span> <span class="nf">generate_table</span><span class="p">(</span><span class="n">trade_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">trades_df</span><span class="p">:</span> <span class="n">QFDataFrame</span><span class="p">,</span> <span class="n">all_trades_count</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Table</span><span class="p">:</span>
+            <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">column_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> Trades&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">trade_type</span><span class="p">),</span> <span class="s2">&quot;Value&quot;</span><span class="p">],</span> <span class="n">css_class</span><span class="o">=</span><span class="s2">&quot;table stats-table&quot;</span><span class="p">)</span>
+
+            <span class="n">trades_count</span> <span class="o">=</span> <span class="n">trades_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">trade_returns</span> <span class="o">=</span> <span class="n">SimpleReturnsSeries</span><span class="p">(</span><span class="n">trades_df</span><span class="p">[</span><span class="n">TradeField</span><span class="o">.</span><span class="n">Return</span><span class="p">])</span>
+
+            <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">% o</span><span class="s2">f </span><span class="si">{}</span><span class="s2"> Trades&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">trade_type</span><span class="p">),</span> <span class="s2">&quot;</span><span class="si">{:.2%}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">trades_count</span> <span class="o">/</span> <span class="n">all_trades_count</span><span class="p">)])</span>
+
+            <span class="n">avg_return</span> <span class="o">=</span> <span class="n">trade_returns</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;Average return of </span><span class="si">{}</span><span class="s2"> Trade&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">trade_type</span><span class="p">),</span> <span class="s2">&quot;</span><span class="si">{:.2%}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">avg_return</span><span class="p">)])</span>
+
+            <span class="n">prices_tms</span> <span class="o">=</span> <span class="n">trade_returns</span><span class="o">.</span><span class="n">to_prices</span><span class="p">()</span>
+            <span class="n">total_return</span> <span class="o">=</span> <span class="n">prices_tms</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">prices_tms</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">1.0</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;Total return of </span><span class="si">{}</span><span class="s2"> Trades&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">trade_type</span><span class="p">),</span> <span class="s2">&quot;</span><span class="si">{:.2%}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">total_return</span><span class="p">)])</span>
+
+            <span class="n">std_of_returns</span> <span class="o">=</span> <span class="n">trade_returns</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;Std of return of </span><span class="si">{}</span><span class="s2"> Trades&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">trade_type</span><span class="p">),</span> <span class="s2">&quot;</span><span class="si">{:.2%}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">std_of_returns</span><span class="p">)])</span>
+
+            <span class="c1"># System Quality Number</span>
+            <span class="n">sqn</span> <span class="o">=</span> <span class="n">avg_return</span> <span class="o">/</span> <span class="n">std_of_returns</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;SQN&quot;</span><span class="p">,</span> <span class="n">sqn</span><span class="p">])</span>
+
+            <span class="k">return</span> <span class="n">table</span>
+
+        <span class="n">long_trades</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trades_df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">trades_df</span><span class="p">[</span><span class="n">TradeField</span><span class="o">.</span><span class="n">Exposure</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">short_trades</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trades_df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">trades_df</span><span class="p">[</span><span class="n">TradeField</span><span class="o">.</span><span class="n">Exposure</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">long_trades_count</span> <span class="o">=</span> <span class="n">long_trades</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">short_trades_count</span> <span class="o">=</span> <span class="n">short_trades</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">all_trades_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trades_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">long_trades_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Add Long Trades statistics table</span>
+            <span class="n">table</span> <span class="o">=</span> <span class="n">generate_table</span><span class="p">(</span><span class="s2">&quot;Long&quot;</span><span class="p">,</span> <span class="n">long_trades</span><span class="p">,</span> <span class="n">all_trades_count</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">add_element</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">short_trades_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Add Long Trades statistics table</span>
+            <span class="n">table</span> <span class="o">=</span> <span class="n">generate_table</span><span class="p">(</span><span class="s2">&quot;Short&quot;</span><span class="p">,</span> <span class="n">short_trades</span><span class="p">,</span> <span class="n">all_trades_count</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">add_element</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_add_simulation_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Generate a data frame consisting of a certain number of &quot;scenarios&quot; (each scenario denotes one single equity</span>
+        <span class="c1"># curve)</span>
+        <span class="n">scenarios_df</span><span class="p">,</span> <span class="n">total_returns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_scenarios</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_simulation_plots</span><span class="p">(</span><span class="n">scenarios_df</span><span class="p">,</span> <span class="n">total_returns</span><span class="p">)</span>
+
+        <span class="n">simulations_summary_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_monte_carlos_simulator_outputs</span><span class="p">(</span><span class="n">scenarios_df</span><span class="p">,</span> <span class="n">total_returns</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">add_element</span><span class="p">(</span><span class="n">simulations_summary_table</span><span class="p">)</span>
+
+        <span class="c1"># Extract the results of each of the scenarios and summarize the data in the tables</span>
+        <span class="n">dist_summary_tables</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_distribution_summary_table</span><span class="p">(</span><span class="n">total_returns</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">add_element</span><span class="p">(</span><span class="n">dist_summary_tables</span><span class="p">)</span>
+
+        <span class="c1"># Add the &quot;Chances of dropping below&quot; and &quot;Simulations summary&quot; tables</span>
+        <span class="n">ruin_chances_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_chances_of_dropping_below_table</span><span class="p">(</span><span class="n">scenarios_df</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">add_element</span><span class="p">(</span><span class="n">ruin_chances_table</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_scenarios</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_of_scenarios</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2500</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">PricesDataFrame</span><span class="p">,</span> <span class="n">SimpleReturnsSeries</span><span class="p">]:</span>
+        <span class="c1"># Generate scenarios, each of which consists of a certain number of trades, equal to the average number</span>
+        <span class="c1"># of trades per year</span>
+        <span class="n">scenarios_generator</span> <span class="o">=</span> <span class="n">ScenariosGenerator</span><span class="p">()</span>
+
+        <span class="c1"># Compute the average number of trades per year</span>
+        <span class="n">number_of_trades</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">returns_of_trades</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+        <span class="n">period_length</span> <span class="o">=</span> <span class="n">Timedelta</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end_date</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_date</span><span class="p">)</span>
+        <span class="n">period_length_in_years</span> <span class="o">=</span> <span class="n">to_days</span><span class="p">(</span><span class="n">period_length</span><span class="p">)</span> <span class="o">/</span> <span class="n">DAYS_PER_YEAR_AVG</span>
+        <span class="n">avg_number_of_trades</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">number_of_trades</span> <span class="o">/</span> <span class="n">period_length_in_years</span><span class="p">)</span>
+
+        <span class="c1"># Generate the scenarios</span>
+        <span class="n">scenarios_df</span> <span class="o">=</span> <span class="n">scenarios_generator</span><span class="o">.</span><span class="n">make_scenarios</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">returns_of_trades</span><span class="p">,</span>
+            <span class="n">scenarios_length</span><span class="o">=</span><span class="n">avg_number_of_trades</span><span class="p">,</span>
+            <span class="n">num_of_scenarios</span><span class="o">=</span><span class="n">num_of_scenarios</span>
+        <span class="p">)</span>
+
+        <span class="n">scenarios_df</span> <span class="o">=</span> <span class="n">scenarios_df</span><span class="o">.</span><span class="n">to_prices</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">scenarios_df</span><span class="p">,</span> <span class="n">scenarios_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">scenarios_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">1.0</span>
+
+    <span class="k">def</span> <span class="nf">_add_simulation_plots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenarios_df</span><span class="p">:</span> <span class="n">PricesDataFrame</span><span class="p">,</span> <span class="n">total_returns</span><span class="p">:</span> <span class="n">SimpleReturnsSeries</span><span class="p">):</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="n">GridElement</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">PlottingMode</span><span class="o">.</span><span class="n">PDF</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">half_image_size</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dpi</span><span class="p">)</span>
+
+        <span class="c1"># Plot all the possible paths on a chart</span>
+        <span class="n">all_paths_chart</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_simulation_plot</span><span class="p">(</span><span class="n">scenarios_df</span> <span class="o">*</span> <span class="mf">100.0</span><span class="p">)</span>
+        <span class="n">grid</span><span class="o">.</span><span class="n">add_chart</span><span class="p">(</span><span class="n">all_paths_chart</span><span class="p">)</span>
+
+        <span class="n">distribution_plot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_distribution_plot</span><span class="p">(</span><span class="n">total_returns</span> <span class="o">*</span> <span class="mf">100.0</span><span class="p">)</span>
+        <span class="n">grid</span><span class="o">.</span><span class="n">add_chart</span><span class="p">(</span><span class="n">distribution_plot</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">add_element</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_simulation_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenarios_df</span><span class="p">:</span> <span class="n">SimpleReturnsSeries</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Chart</span><span class="p">:</span>
+        <span class="n">chart</span> <span class="o">=</span> <span class="n">LineChart</span><span class="p">(</span><span class="n">log_scale</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">scenario</span> <span class="ow">in</span> <span class="n">scenarios_df</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">data_element</span> <span class="o">=</span> <span class="n">DataElementDecorator</span><span class="p">(</span><span class="n">scenario</span><span class="p">)</span>
+            <span class="n">chart</span><span class="o">.</span><span class="n">add_decorator</span><span class="p">(</span><span class="n">data_element</span><span class="p">)</span>
+
+        <span class="c1"># Add title</span>
+        <span class="n">title_decorator</span> <span class="o">=</span> <span class="n">TitleDecorator</span><span class="p">(</span><span class="s2">&quot;Monte Carlo Simulations (log scale)&quot;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s2">&quot;title&quot;</span><span class="p">)</span>
+        <span class="n">chart</span><span class="o">.</span><span class="n">add_decorator</span><span class="p">(</span><span class="n">title_decorator</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">chart</span>
+
+    <span class="k">def</span> <span class="nf">_get_distribution_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenarios_results</span><span class="p">:</span> <span class="n">SimpleReturnsSeries</span><span class="p">,</span> <span class="n">bins</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="mi">200</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Chart</span><span class="p">:</span>
+        <span class="c1"># Plot the distribution</span>
+        <span class="n">start_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">scenarios_results</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+        <span class="n">end_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">scenarios_results</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">)</span>
+        <span class="n">chart</span> <span class="o">=</span> <span class="n">HistogramChart</span><span class="p">(</span><span class="n">scenarios_results</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">start_x</span><span class="o">=</span><span class="n">start_x</span><span class="p">,</span> <span class="n">end_x</span><span class="o">=</span><span class="n">end_x</span><span class="p">)</span>
+
+        <span class="c1"># Add title</span>
+        <span class="n">title_decorator</span> <span class="o">=</span> <span class="n">TitleDecorator</span><span class="p">(</span><span class="s2">&quot;Monte Carlo Simulations Distribution&quot;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s2">&quot;title&quot;</span><span class="p">)</span>
+        <span class="n">chart</span><span class="o">.</span><span class="n">add_decorator</span><span class="p">(</span><span class="n">title_decorator</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">chart</span>
+
+    <span class="k">def</span> <span class="nf">_get_distribution_summary_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenarios_results</span><span class="p">:</span> <span class="n">SimpleReturnsSeries</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GridElement</span><span class="p">:</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="n">GridElement</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">PlottingMode</span><span class="o">.</span><span class="n">PDF</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">half_image_size</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dpi</span><span class="p">)</span>
+
+        <span class="n">table_worst</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">column_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Scenarios&quot;</span><span class="p">,</span> <span class="s2">&quot;Return&quot;</span><span class="p">],</span> <span class="n">css_class</span><span class="o">=</span><span class="s2">&quot;table stats-table&quot;</span><span class="p">)</span>
+        <span class="n">table_top</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">column_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Scenarios&quot;</span><span class="p">,</span> <span class="s2">&quot;Return&quot;</span><span class="p">],</span> <span class="n">css_class</span><span class="o">=</span><span class="s2">&quot;table stats-table&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">percentage</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]:</span>
+            <span class="n">table_worst</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">{:.0%}</span><span class="s2"> Tail&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">percentage</span><span class="p">),</span>
+                                 <span class="s2">&quot;</span><span class="si">{:.2%}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">scenarios_results</span><span class="p">,</span> <span class="n">percentage</span><span class="p">))])</span>
+            <span class="n">table_top</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">{:.0%}</span><span class="s2"> Top&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">percentage</span><span class="p">),</span>
+                               <span class="s2">&quot;</span><span class="si">{:.2%}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">scenarios_results</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">percentage</span><span class="p">)))])</span>
+
+        <span class="n">grid</span><span class="o">.</span><span class="n">add_element</span><span class="p">(</span><span class="n">table_worst</span><span class="p">)</span>
+        <span class="n">grid</span><span class="o">.</span><span class="n">add_element</span><span class="p">(</span><span class="n">table_top</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">grid</span>
+
+    <span class="k">def</span> <span class="nf">_get_chances_of_dropping_below_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenarios_df</span><span class="p">:</span> <span class="n">PricesDataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Table</span><span class="p">:</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">column_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Chances of dropping below&quot;</span><span class="p">,</span> <span class="s2">&quot;Probability&quot;</span><span class="p">],</span> <span class="n">css_class</span><span class="o">=</span><span class="s2">&quot;table stats-table&quot;</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">all_scenarios_number</span> <span class="o">=</span> <span class="n">scenarios_df</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="k">for</span> <span class="n">percentage</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mi">9</span><span class="p">):</span>
+            <span class="c1"># Count number of scenarios, whose returns at some point of time dropped below the percentage * initial</span>
+            <span class="c1"># value</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">scenarios_above_percentage</span> <span class="o">=</span> <span class="n">scenarios_df</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">scenarios_df</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">percentage</span><span class="p">))</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
+            <span class="n">probability</span> <span class="o">=</span> <span class="p">(</span><span class="n">all_scenarios_number</span> <span class="o">-</span> <span class="n">scenarios_above_percentage</span><span class="p">)</span> <span class="o">/</span> <span class="n">all_scenarios_number</span>
+
+            <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">{:.0%}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">percentage</span><span class="p">),</span> <span class="s2">&quot;</span><span class="si">{:.2%}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">probability</span><span class="p">)])</span>
+
+            <span class="k">if</span> <span class="n">probability</span> <span class="o">&lt;</span> <span class="mf">1.0</span> <span class="ow">and</span> <span class="n">percentage</span> <span class="o">&gt;</span> <span class="mf">0.1</span><span class="p">:</span>
+                <span class="k">break</span>
+
+        <span class="k">return</span> <span class="n">table</span>
+
+    <span class="k">def</span> <span class="nf">_get_monte_carlos_simulator_outputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenarios_df</span><span class="p">:</span> <span class="n">PricesDataFrame</span><span class="p">,</span> <span class="n">total_returns</span><span class="p">:</span> <span class="n">SimpleReturnsSeries</span><span class="p">)</span> <span class="o">-&gt;</span> \
+            <span class="n">Table</span><span class="p">:</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">column_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Measure&quot;</span><span class="p">,</span> <span class="s2">&quot;Value&quot;</span><span class="p">],</span> <span class="n">css_class</span><span class="o">=</span><span class="s2">&quot;table stats-table&quot;</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">all_scenarios_number</span> <span class="o">=</span> <span class="n">scenarios_df</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="c1"># Add the Median Return value</span>
+        <span class="n">median_return</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">total_returns</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;Median Return&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{:.2%}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">median_return</span><span class="p">)])</span>
+
+        <span class="c1"># Add the Median Drawdown</span>
+        <span class="n">max_drawdowns</span> <span class="o">=</span> <span class="n">max_drawdown</span><span class="p">(</span><span class="n">scenarios_df</span><span class="p">)</span>
+        <span class="n">median_drawdown</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">max_drawdowns</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;Median Maximum Drawdown&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{:.2%}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">median_drawdown</span><span class="p">)])</span>
+
+        <span class="c1"># Add the Median Return / Median Drawdown</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;Return / Drawdown&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">median_return</span> <span class="o">/</span> <span class="n">median_drawdown</span><span class="p">)])</span>
+
+        <span class="c1"># Probability, that the return will be &gt; 0</span>
+        <span class="n">scenarios_with_positive_result</span> <span class="o">=</span> <span class="n">total_returns</span><span class="p">[</span><span class="n">total_returns</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+        <span class="n">probability</span> <span class="o">=</span> <span class="n">scenarios_with_positive_result</span> <span class="o">/</span> <span class="n">all_scenarios_number</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s2">&quot;Probability &gt; 0&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{:.2%}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">probability</span><span class="p">)])</span>
+
+        <span class="k">return</span> <span class="n">table</span>
+
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">output_sub_dir</span> <span class="o">=</span> <span class="s2">&quot;trades_analysis&quot;</span>
+
+        <span class="c1"># Set the style for the report</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">([</span><span class="s1">&#39;tearsheet&#39;</span><span class="p">])</span>
+
+        <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;%Y_%m_</span><span class="si">%d</span><span class="s2">-%H%M </span><span class="si">{}</span><span class="s2">.pdf&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pdf_exporter</span><span class="o">.</span><span class="n">generate</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">document</span><span class="p">],</span> <span class="n">output_sub_dir</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

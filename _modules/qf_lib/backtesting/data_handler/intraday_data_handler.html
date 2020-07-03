@@ -1,0 +1,611 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>qf_lib.backtesting.data_handler.intraday_data_handler &mdash; QF Lib  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home" alt="Documentation Home"> QF Lib
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../analysis.html">analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../backtesting.html">backtesting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../common.html">common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../containers.html">containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../data_providers.html">data_providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../document_utils.html">document_utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plotting.html">plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../indicators.html">indicators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../portfolio_construction.html">portfolio_construction</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">QF Lib</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>qf_lib.backtesting.data_handler.intraday_data_handler</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for qf_lib.backtesting.data_handler.intraday_data_handler</h1><div class="highlight"><pre>
+<span></span><span class="c1">#     Copyright 2016-present CERN – European Organization for Nuclear Research</span>
+<span class="c1">#</span>
+<span class="c1">#     Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1">#     you may not use this file except in compliance with the License.</span>
+<span class="c1">#     You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#         http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1">#     Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1">#     distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1">#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1">#     See the License for the specific language governing permissions and</span>
+<span class="c1">#     limitations under the License.</span>
+
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Sequence</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">qf_lib.backtesting.data_handler.data_handler</span> <span class="kn">import</span> <span class="n">DataHandler</span>
+<span class="kn">from</span> <span class="nn">qf_lib.backtesting.events.time_event.regular_time_event.market_close_event</span> <span class="kn">import</span> <span class="n">MarketCloseEvent</span>
+<span class="kn">from</span> <span class="nn">qf_lib.backtesting.events.time_event.regular_time_event.market_open_event</span> <span class="kn">import</span> <span class="n">MarketOpenEvent</span>
+<span class="kn">from</span> <span class="nn">qf_lib.common.enums.frequency</span> <span class="kn">import</span> <span class="n">Frequency</span>
+<span class="kn">from</span> <span class="nn">qf_lib.common.enums.price_field</span> <span class="kn">import</span> <span class="n">PriceField</span>
+<span class="kn">from</span> <span class="nn">qf_lib.common.tickers.tickers</span> <span class="kn">import</span> <span class="n">Ticker</span>
+<span class="kn">from</span> <span class="nn">qf_lib.common.utils.dateutils.relative_delta</span> <span class="kn">import</span> <span class="n">RelativeDelta</span>
+<span class="kn">from</span> <span class="nn">qf_lib.common.utils.miscellaneous.to_list_conversion</span> <span class="kn">import</span> <span class="n">convert_to_list</span>
+<span class="kn">from</span> <span class="nn">qf_lib.containers.dataframe.prices_dataframe</span> <span class="kn">import</span> <span class="n">PricesDataFrame</span>
+<span class="kn">from</span> <span class="nn">qf_lib.containers.dataframe.qf_dataframe</span> <span class="kn">import</span> <span class="n">QFDataFrame</span>
+<span class="kn">from</span> <span class="nn">qf_lib.containers.qf_data_array</span> <span class="kn">import</span> <span class="n">QFDataArray</span>
+<span class="kn">from</span> <span class="nn">qf_lib.containers.series.cast_series</span> <span class="kn">import</span> <span class="n">cast_series</span>
+<span class="kn">from</span> <span class="nn">qf_lib.containers.series.prices_series</span> <span class="kn">import</span> <span class="n">PricesSeries</span>
+<span class="kn">from</span> <span class="nn">qf_lib.containers.series.qf_series</span> <span class="kn">import</span> <span class="n">QFSeries</span>
+
+
+<div class="viewcode-block" id="IntradayDataHandler"><a class="viewcode-back" href="../../../../_autosummary/qf_lib.backtesting.data_handler.intraday_data_handler.IntradayDataHandler.html#qf_lib.backtesting.data_handler.intraday_data_handler.IntradayDataHandler">[docs]</a><span class="k">class</span> <span class="nc">IntradayDataHandler</span><span class="p">(</span><span class="n">DataHandler</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">_check_frequency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frequency</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">frequency</span> <span class="ow">and</span> <span class="n">frequency</span> <span class="o">&lt;=</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">DAILY</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Only frequency higher than daily is supported by IntradayDataHandler.&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="IntradayDataHandler.historical_price"><a class="viewcode-back" href="../../../../_autosummary/qf_lib.backtesting.data_handler.intraday_data_handler.IntradayDataHandler.html#qf_lib.backtesting.data_handler.intraday_data_handler.IntradayDataHandler.historical_price">[docs]</a>    <span class="k">def</span> <span class="nf">historical_price</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">tickers</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Ticker</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Ticker</span><span class="p">]],</span> <span class="n">fields</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">PriceField</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">PriceField</span><span class="p">]],</span>
+            <span class="n">nr_of_bars</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">frequency</span><span class="p">:</span> <span class="n">Frequency</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">PricesSeries</span><span class="p">,</span> <span class="n">PricesDataFrame</span><span class="p">,</span> <span class="n">QFDataArray</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the latest available data samples. In case of N minutes frequency, the most recent data may not</span>
+<span class="sd">        represent exactly N minutes (if the whole bar was not available at this time). The time ranges are always</span>
+<span class="sd">        aligned to the market open time.</span>
+
+<span class="sd">        E.g. In case of market open time equal to 10:30, the historical_price at 11:05 with frequency set to</span>
+<span class="sd">        15 minutes and 3 bars, the data samples corresponding to the following bars will be returned:</span>
+<span class="sd">        10:30 - 10:45  (inclusive; full 15 minutes bar)</span>
+<span class="sd">        10:45 - 11:00</span>
+<span class="sd">        11:00 - 11:05  (inclusive; only 5 minutes bar)</span>
+<span class="sd">        The series is indexed with the open time (left side of the time range).</span>
+
+<span class="sd">        Non-zero seconds and microseconds are in the above case omitted (the output at 11:05:10 will be exactly</span>
+<span class="sd">        the same as at 11:05).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tickers</span>
+<span class="sd">            ticker or sequence of tickers of the securities</span>
+<span class="sd">        fields</span>
+<span class="sd">            PriceField or sequence of PriceFields of the securities</span>
+<span class="sd">        nr_of_bars</span>
+<span class="sd">            number of data samples (bars) to be returned.</span>
+<span class="sd">            Note: while requesting more than one ticker, some tickers may have fewer than n_of_bars data points</span>
+<span class="sd">        frequency</span>
+<span class="sd">            frequency of the data</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        --------</span>
+<span class="sd">        PricesSeries, PricesDataFrame, QFDataArray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">frequency</span> <span class="o">=</span> <span class="n">frequency</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixed_data_provider_frequency</span> <span class="ow">or</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">MIN_1</span>
+
+        <span class="n">days_per_year</span> <span class="o">=</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">DAILY</span><span class="o">.</span><span class="n">occurrences_in_year</span>
+        <span class="n">bars_per_year</span> <span class="o">=</span> <span class="n">frequency</span><span class="o">.</span><span class="n">occurrences_in_year</span>
+        <span class="n">bars_per_day</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bars_per_year</span> <span class="o">/</span> <span class="n">days_per_year</span><span class="p">)</span>
+
+        <span class="c1"># Add 5 days to ensure that any data absence will not impact the number of bars which will be returned</span>
+        <span class="n">nr_of_days_to_go_back</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">nr_of_bars</span> <span class="o">/</span> <span class="n">bars_per_day</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span>
+
+        <span class="n">end_date</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_end_date_without_look_ahead</span><span class="p">()</span>
+
+        <span class="c1"># Remove the time part and leave only days in order to align the start date to match the market open time</span>
+        <span class="c1"># E.g. if the market opens at 13:30, the bars will also start at 13:30</span>
+        <span class="n">start_date</span> <span class="o">=</span> <span class="n">end_date</span> <span class="o">-</span> <span class="n">RelativeDelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">nr_of_days_to_go_back</span><span class="p">,</span> <span class="n">hour</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">container</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_provider</span><span class="o">.</span><span class="n">get_price</span><span class="p">(</span><span class="n">tickers</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">frequency</span><span class="p">)</span>
+
+        <span class="n">num_of_dates_available</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">num_of_dates_available</span> <span class="o">&lt;</span> <span class="n">nr_of_bars</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tickers</span><span class="p">,</span> <span class="n">Ticker</span><span class="p">):</span>
+                <span class="n">tickers_as_strings</span> <span class="o">=</span> <span class="n">tickers</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tickers_as_strings</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ticker</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">ticker</span> <span class="ow">in</span> <span class="n">tickers</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Not enough data points for </span><span class="se">\n</span><span class="s2">tickers: </span><span class="si">{}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">date: </span><span class="si">{}</span><span class="s2">.&quot;</span>
+                             <span class="s2">&quot;</span><span class="se">\n</span><span class="si">{}</span><span class="s2"> Data points requested, </span><span class="se">\n</span><span class="si">{}</span><span class="s2"> Data points available.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                 <span class="n">tickers_as_strings</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">nr_of_bars</span><span class="p">,</span> <span class="n">num_of_dates_available</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">container</span><span class="p">,</span> <span class="n">QFDataArray</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">container</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">dates</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="o">-</span><span class="n">nr_of_bars</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">container</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="n">nr_of_bars</span><span class="p">)</span>  <span class="c1"># type: Union[PricesSeries, PricesDataFrame]</span></div>
+
+<div class="viewcode-block" id="IntradayDataHandler.get_price"><a class="viewcode-back" href="../../../../_autosummary/qf_lib.backtesting.data_handler.intraday_data_handler.IntradayDataHandler.html#qf_lib.backtesting.data_handler.intraday_data_handler.IntradayDataHandler.get_price">[docs]</a>    <span class="k">def</span> <span class="nf">get_price</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tickers</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Ticker</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Ticker</span><span class="p">]],</span> <span class="n">fields</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">PriceField</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">PriceField</span><span class="p">]],</span>
+                  <span class="n">start_date</span><span class="p">:</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">end_date</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">frequency</span><span class="p">:</span> <span class="n">Frequency</span> <span class="o">=</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">DAILY</span><span class="p">)</span> <span class="o">-&gt;</span> \
+            <span class="n">Union</span><span class="p">[</span><span class="n">PricesSeries</span><span class="p">,</span> <span class="n">PricesDataFrame</span><span class="p">,</span> <span class="n">QFDataArray</span><span class="p">]:</span>
+        <span class="n">frequency</span> <span class="o">=</span> <span class="n">frequency</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixed_data_provider_frequency</span> <span class="ow">or</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">MIN_1</span>
+        <span class="n">end_date_without_look_ahead</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_end_date_without_look_ahead</span><span class="p">(</span><span class="n">end_date</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_provider</span><span class="o">.</span><span class="n">get_price</span><span class="p">(</span><span class="n">tickers</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date_without_look_ahead</span><span class="p">,</span>
+                                            <span class="n">frequency</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IntradayDataHandler.get_history"><a class="viewcode-back" href="../../../../_autosummary/qf_lib.backtesting.data_handler.intraday_data_handler.IntradayDataHandler.html#qf_lib.backtesting.data_handler.intraday_data_handler.IntradayDataHandler.get_history">[docs]</a>    <span class="k">def</span> <span class="nf">get_history</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">tickers</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Ticker</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Ticker</span><span class="p">]],</span> <span class="n">fields</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">datetime</span><span class="p">,</span>
+            <span class="n">end_date</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">frequency</span><span class="p">:</span> <span class="n">Frequency</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> \
+            <span class="n">Union</span><span class="p">[</span><span class="n">QFSeries</span><span class="p">,</span> <span class="n">QFDataFrame</span><span class="p">,</span> <span class="n">QFDataArray</span><span class="p">]:</span>
+
+        <span class="n">frequency</span> <span class="o">=</span> <span class="n">frequency</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixed_data_provider_frequency</span> <span class="ow">or</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">MIN_1</span>
+        <span class="n">end_date_without_look_ahead</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_end_date_without_look_ahead</span><span class="p">(</span><span class="n">end_date</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_provider</span><span class="o">.</span><span class="n">get_history</span><span class="p">(</span><span class="n">tickers</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date_without_look_ahead</span><span class="p">,</span> <span class="n">frequency</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IntradayDataHandler.get_last_available_price"><a class="viewcode-back" href="../../../../_autosummary/qf_lib.backtesting.data_handler.intraday_data_handler.IntradayDataHandler.html#qf_lib.backtesting.data_handler.intraday_data_handler.IntradayDataHandler.get_last_available_price">[docs]</a>    <span class="k">def</span> <span class="nf">get_last_available_price</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tickers</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Ticker</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Ticker</span><span class="p">]],</span>
+                                 <span class="n">frequency</span><span class="p">:</span> <span class="n">Frequency</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the latest available price for given assets, even if the full bar is not yet available.</span>
+
+<span class="sd">        The frequency parameter is always casted into 1 minute frequency, to represent the most recent price.</span>
+
+<span class="sd">        It returns the CLOSE price of the last available bar. If &quot;now&quot; is after the market OPEN, and before the market</span>
+<span class="sd">        CLOSE, the last available price is equal to the current price (CLOSE price of the bar, which right bound is</span>
+<span class="sd">        equal to &quot;now&quot;). If the market did not open yet, the last available CLOSE price will be returned.</span>
+<span class="sd">        Non-zero seconds or microseconds values are omitted (e.g. 13:40:01 is always treated as 13:40:00).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -----------</span>
+<span class="sd">        tickers: Ticker, Sequence[Ticker]</span>
+<span class="sd">            tickers of the securities which prices should be downloaded</span>
+<span class="sd">        frequency: Frequency</span>
+<span class="sd">            frequency of the data</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float, pd.Series</span>
+<span class="sd">            last_prices series where:</span>
+<span class="sd">            - last_prices.name contains a date of current prices,</span>
+<span class="sd">            - last_prices.index contains tickers</span>
+<span class="sd">            - last_prices.data contains latest available prices for given tickers</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">frequency</span> <span class="o">=</span> <span class="n">frequency</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixed_data_provider_frequency</span> <span class="ow">or</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">MIN_1</span>
+
+        <span class="k">if</span> <span class="n">frequency</span> <span class="o">&lt;=</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">DAILY</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The Intraday Data Handler can be used only with the Intraday Frequency&quot;</span><span class="p">)</span>
+
+        <span class="n">tickers</span><span class="p">,</span> <span class="n">was_single_ticker_provided</span> <span class="o">=</span> <span class="n">convert_to_list</span><span class="p">(</span><span class="n">tickers</span><span class="p">,</span> <span class="n">Ticker</span><span class="p">)</span>
+
+        <span class="c1"># if an empty tickers list was supplied then return an empty result</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tickers</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">()</span>
+
+        <span class="n">current_datetime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+        <span class="c1"># If the current_datetime represents the time after Market Close and before Market Open, shift it to the</span>
+        <span class="c1"># Market Close of the day before</span>
+        <span class="k">if</span> <span class="n">current_datetime</span> <span class="o">+</span> <span class="n">MarketOpenEvent</span><span class="o">.</span><span class="n">trigger_time</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">current_datetime</span><span class="p">:</span>
+            <span class="n">current_datetime</span> <span class="o">=</span> <span class="n">current_datetime</span> <span class="o">-</span> <span class="n">RelativeDelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">current_datetime</span> <span class="o">=</span> <span class="n">current_datetime</span> <span class="o">+</span> <span class="n">MarketCloseEvent</span><span class="o">.</span><span class="n">trigger_time</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">current_datetime</span> <span class="o">+</span> <span class="n">MarketCloseEvent</span><span class="o">.</span><span class="n">trigger_time</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">current_datetime</span><span class="p">:</span>
+            <span class="n">current_datetime</span> <span class="o">=</span> <span class="n">current_datetime</span> <span class="o">+</span> <span class="n">MarketCloseEvent</span><span class="o">.</span><span class="n">trigger_time</span><span class="p">()</span>
+
+        <span class="c1"># If the current_datetime represents Saturday or Sunday, shift it to last Friday</span>
+        <span class="k">if</span> <span class="n">current_datetime</span><span class="o">.</span><span class="n">weekday</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>
+            <span class="n">current_datetime</span> <span class="o">=</span> <span class="n">current_datetime</span> <span class="o">-</span> <span class="n">RelativeDelta</span><span class="p">(</span><span class="n">weekday</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">weeks</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># The time range denotes the current_datetime +- time delta related to the given frequency. The current price is</span>
+        <span class="c1"># represented as the close price of (time_range_start, current_datetime) range, labeled using the time_range_</span>
+        <span class="c1"># start value in most of the cases.</span>
+        <span class="c1">#</span>
+        <span class="c1"># The only exception is the price at the market open - in this case we do not have the bar directly</span>
+        <span class="c1"># leading up to market open time. Thus, the open price from the time range (current_datetime, time_range_end)</span>
+        <span class="c1"># is used to denote the price.</span>
+
+        <span class="n">time_range_start</span> <span class="o">=</span> <span class="n">current_datetime</span> <span class="o">-</span> <span class="n">frequency</span><span class="o">.</span><span class="n">time_delta</span><span class="p">()</span>
+        <span class="n">time_range_end</span> <span class="o">=</span> <span class="n">current_datetime</span> <span class="o">+</span> <span class="n">frequency</span><span class="o">.</span><span class="n">time_delta</span><span class="p">()</span>
+
+        <span class="c1"># The start date is used to download older data, in case if there is no price available currently and we are</span>
+        <span class="c1"># interested in the last available one. Therefore, at first we look one hour in the past. If this amount of data</span>
+        <span class="c1"># would not be sufficient, we would look up to a few days in the past.</span>
+
+        <span class="n">download_start_date</span> <span class="o">=</span> <span class="n">current_datetime</span> <span class="o">-</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">MIN_60</span><span class="o">.</span><span class="n">time_delta</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">download_prices</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">,</span> <span class="n">multiple_days</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <span class="c1"># Function which downloads prices for the given tickers. In case if the time range spans over multiple days</span>
+            <span class="c1"># and thus contains at least one Market Open Event, combine the Open price for the first bar after the</span>
+            <span class="c1"># market open with the Close prices for all other bars from this day.</span>
+            <span class="k">if</span> <span class="n">multiple_days</span><span class="p">:</span>
+                <span class="n">price_fields</span> <span class="o">=</span> <span class="p">[</span><span class="n">PriceField</span><span class="o">.</span><span class="n">Open</span><span class="p">,</span> <span class="n">PriceField</span><span class="o">.</span><span class="n">Close</span><span class="p">]</span>
+                <span class="n">prices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_provider</span><span class="o">.</span><span class="n">get_price</span><span class="p">(</span><span class="n">tickers</span><span class="p">,</span> <span class="n">price_fields</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span>
+                                                      <span class="n">end_time</span><span class="p">,</span> <span class="n">frequency</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_array_to_dataframe</span><span class="p">(</span><span class="n">prices</span><span class="p">,</span> <span class="n">frequency</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_provider</span><span class="o">.</span><span class="n">get_price</span><span class="p">(</span><span class="n">tickers</span><span class="p">,</span> <span class="n">PriceField</span><span class="o">.</span><span class="n">Close</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span>
+                                                    <span class="n">end_time</span><span class="p">,</span> <span class="n">frequency</span><span class="p">)</span>
+
+        <span class="c1"># If the data contains the Market Open Price, merge the prices</span>
+        <span class="k">if</span> <span class="n">download_start_date</span> <span class="o">&lt;=</span> <span class="n">MarketOpenEvent</span><span class="o">.</span><span class="n">trigger_time</span><span class="p">()</span> <span class="o">+</span> <span class="n">time_range_end</span> <span class="o">&lt;=</span> <span class="n">time_range_end</span><span class="p">:</span>
+            <span class="n">contains_market_open</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">download_start_date</span> <span class="o">&lt;=</span> <span class="n">MarketOpenEvent</span><span class="o">.</span><span class="n">trigger_time</span><span class="p">()</span> <span class="o">+</span> <span class="n">download_start_date</span> <span class="o">&lt;=</span> <span class="n">time_range_end</span><span class="p">:</span>
+            <span class="n">contains_market_open</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">time_range_end</span> <span class="o">-</span> <span class="n">download_start_date</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">contains_market_open</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">contains_market_open</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="n">prices_data_array</span> <span class="o">=</span> <span class="n">download_prices</span><span class="p">(</span><span class="n">download_start_date</span><span class="p">,</span> <span class="n">time_range_end</span><span class="p">,</span> <span class="n">contains_market_open</span><span class="p">)</span>
+
+        <span class="c1"># Access the price bar starting at time_range_start and ending at current_datetime</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">prices_series</span> <span class="o">=</span> <span class="n">prices_data_array</span><span class="o">.</span><span class="n">asof</span><span class="p">(</span><span class="n">time_range_start</span><span class="p">)</span>
+            <span class="n">prices_series</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Last available asset prices&quot;</span>
+
+            <span class="k">if</span> <span class="n">prices_series</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+                <span class="c1"># If any of the values is null, download more data, using a longer period of time</span>
+                <span class="k">raise</span> <span class="ne">IndexError</span>
+
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="c1"># Download data using a longer period of time. In case of Monday or Tuesday, we download data from last 4</span>
+            <span class="c1"># days in order to handle situations, were there was no price on Monday or Friday (and during the weekend).</span>
+            <span class="c1"># In all other cases, we download data from the last 2 days.</span>
+            <span class="n">number_of_days_to_go_back</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">download_start_date</span><span class="o">.</span><span class="n">weekday</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">else</span> <span class="mi">4</span>
+            <span class="n">prices_data_array</span> <span class="o">=</span> <span class="n">download_prices</span><span class="p">(</span><span class="n">download_start_date</span> <span class="o">-</span> <span class="n">RelativeDelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">number_of_days_to_go_back</span><span class="p">),</span>
+                                                <span class="n">time_range_end</span><span class="p">,</span>
+                                                <span class="n">multiple_days</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="n">prices_series</span> <span class="o">=</span> <span class="n">prices_data_array</span><span class="o">.</span><span class="n">asof</span><span class="p">(</span><span class="n">time_range_start</span><span class="p">)</span>
+            <span class="n">prices_series</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Last available asset prices&quot;</span>
+
+        <span class="n">prices_series</span> <span class="o">=</span> <span class="n">cast_series</span><span class="p">(</span><span class="n">prices_series</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">was_single_ticker_provided</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prices_series</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prices_series</span></div>
+
+<div class="viewcode-block" id="IntradayDataHandler.get_current_price"><a class="viewcode-back" href="../../../../_autosummary/qf_lib.backtesting.data_handler.intraday_data_handler.IntradayDataHandler.html#qf_lib.backtesting.data_handler.intraday_data_handler.IntradayDataHandler.get_current_price">[docs]</a>    <span class="k">def</span> <span class="nf">get_current_price</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tickers</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Ticker</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Ticker</span><span class="p">]],</span>
+                          <span class="n">frequency</span><span class="p">:</span> <span class="n">Frequency</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Works just like get_last_available_price() but it can return NaNs if data is not available at the current</span>
+<span class="sd">        moment (e.g. it returns NaN on a non-trading day).</span>
+
+<span class="sd">        The frequency parameter is always casted into 1 minute frequency, to represent the most recent price.</span>
+
+<span class="sd">        If the frequency parameter is an intraday frequency, the CLOSE price of the currently available bar will be</span>
+<span class="sd">        returned.</span>
+<span class="sd">        E.g. for 1 minute frequency, at 13:00 (if the market opens before 13:00), the CLOSE price of the</span>
+<span class="sd">        12:59 - 13:00 bar will be returned.</span>
+<span class="sd">        If &quot;now&quot; contains non-zero seconds or microseconds, None will be returned.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -----------</span>
+<span class="sd">        tickers: Ticker, Sequence[Ticker]</span>
+<span class="sd">            tickers of the securities which prices should be downloaded</span>
+<span class="sd">        frequency: Frequency</span>
+<span class="sd">            frequency of the data</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float, pd.Series</span>
+<span class="sd">            current_prices series where:</span>
+<span class="sd">            - current_prices.name contains a date of current prices,</span>
+<span class="sd">            - current_prices.index contains tickers</span>
+<span class="sd">            - current_prices.data contains latest available prices for given tickers</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">frequency</span> <span class="o">=</span> <span class="n">frequency</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixed_data_provider_frequency</span> <span class="ow">or</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">MIN_1</span>
+
+        <span class="k">if</span> <span class="n">frequency</span> <span class="o">&lt;=</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">DAILY</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The Intraday Data Handler can be used only with the Intraday Frequency&quot;</span><span class="p">)</span>
+
+        <span class="n">tickers</span><span class="p">,</span> <span class="n">was_single_ticker_provided</span> <span class="o">=</span> <span class="n">convert_to_list</span><span class="p">(</span><span class="n">tickers</span><span class="p">,</span> <span class="n">Ticker</span><span class="p">)</span>
+        <span class="c1"># if an empty tickers list was supplied then return an empty result</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tickers</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">()</span>
+
+        <span class="n">current_datetime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+        <span class="c1"># Check if the current time is at the market open, if so - take the Open price of the time range, starting</span>
+        <span class="c1"># at current datetime</span>
+        <span class="k">if</span> <span class="n">current_datetime</span> <span class="o">+</span> <span class="n">MarketOpenEvent</span><span class="o">.</span><span class="n">trigger_time</span><span class="p">()</span> <span class="o">==</span> <span class="n">current_datetime</span><span class="p">:</span>
+            <span class="n">time_range_start</span> <span class="o">=</span> <span class="n">current_datetime</span>
+            <span class="n">field</span> <span class="o">=</span> <span class="n">PriceField</span><span class="o">.</span><span class="n">Open</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">time_range_start</span> <span class="o">=</span> <span class="n">current_datetime</span> <span class="o">-</span> <span class="n">frequency</span><span class="o">.</span><span class="n">time_delta</span><span class="p">()</span>
+            <span class="n">field</span> <span class="o">=</span> <span class="n">PriceField</span><span class="o">.</span><span class="n">Close</span>
+
+        <span class="n">prices_data_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_provider</span><span class="o">.</span><span class="n">get_price</span><span class="p">(</span><span class="n">tickers</span><span class="p">,</span>
+                                                         <span class="n">field</span><span class="p">,</span>
+                                                         <span class="n">time_range_start</span><span class="p">,</span>
+                                                         <span class="n">time_range_start</span> <span class="o">+</span> <span class="n">frequency</span><span class="o">.</span><span class="n">time_delta</span><span class="p">(),</span>
+                                                         <span class="n">frequency</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Below, the loc[time_range_start] is used instead of iloc[0], in order to return the price exactly from the</span>
+            <span class="c1"># time_range_start, and not from the range between time_range_start and time_range_start +</span>
+            <span class="c1"># frequency.time_delta()</span>
+            <span class="n">prices_series</span> <span class="o">=</span> <span class="n">prices_data_array</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">time_range_start</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">prices_series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">tickers</span><span class="p">)</span>
+
+        <span class="n">prices_series</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Current asset prices&quot;</span>
+
+        <span class="n">prices_series</span> <span class="o">=</span> <span class="n">cast_series</span><span class="p">(</span><span class="n">prices_series</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">was_single_ticker_provided</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prices_series</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prices_series</span></div>
+
+<div class="viewcode-block" id="IntradayDataHandler.get_current_bar"><a class="viewcode-back" href="../../../../_autosummary/qf_lib.backtesting.data_handler.intraday_data_handler.IntradayDataHandler.html#qf_lib.backtesting.data_handler.intraday_data_handler.IntradayDataHandler.get_current_bar">[docs]</a>    <span class="k">def</span> <span class="nf">get_current_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tickers</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Ticker</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Ticker</span><span class="p">]],</span> <span class="n">frequency</span><span class="p">:</span> <span class="n">Frequency</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> \
+            <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the current bar(s) for given Ticker(s). If the bar is not available yet, None is returned.</span>
+
+<span class="sd">        If the request for single Ticker was made, then the result is a pandas.Series indexed with PriceFields (OHLCV).</span>
+<span class="sd">        If the request for multiple Tickers was made, then the result has Tickers as an index and PriceFields</span>
+<span class="sd">        as columns.</span>
+
+<span class="sd">        In case of N minutes frequency, the current bar can be returned in the time between (inclusive) N minutes</span>
+<span class="sd">        after MarketOpenEvent and the MarketCloseEvent).</span>
+
+<span class="sd">        E.g. for 1 minute frequency, at 13:00 (if the market opens before 13:00), the 12:59 - 13:00 bar will be</span>
+<span class="sd">        returned. In case of 15 minutes frequency, when the market opened less then 15 minutes ago, Nones will be</span>
+<span class="sd">        returned. If current time (&quot;now&quot;) contains non-zero seconds or microseconds, Nones will be returned.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -----------</span>
+<span class="sd">        tickers: Ticker, Sequence[Ticker]</span>
+<span class="sd">            tickers of the securities which prices should be downloaded</span>
+<span class="sd">        frequency: Frequency</span>
+<span class="sd">            frequency of the data</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pandas.Series, pandas.DataFrame</span>
+<span class="sd">            current bar</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tickers</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">()</span>
+
+        <span class="n">frequency</span> <span class="o">=</span> <span class="n">frequency</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixed_data_provider_frequency</span> <span class="ow">or</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">MIN_1</span>
+
+        <span class="n">tickers</span><span class="p">,</span> <span class="n">was_single_ticker_provided</span> <span class="o">=</span> <span class="n">convert_to_list</span><span class="p">(</span><span class="n">tickers</span><span class="p">,</span> <span class="n">Ticker</span><span class="p">)</span>
+
+        <span class="n">current_datetime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+        <span class="n">start_date</span> <span class="o">=</span> <span class="n">current_datetime</span> <span class="o">-</span> <span class="n">frequency</span><span class="o">.</span><span class="n">time_delta</span><span class="p">()</span>
+        <span class="n">prices_data_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_price</span><span class="p">(</span><span class="n">tickers</span><span class="o">=</span><span class="n">tickers</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="n">PriceField</span><span class="o">.</span><span class="n">ohlcv</span><span class="p">(),</span> <span class="n">start_date</span><span class="o">=</span><span class="n">start_date</span><span class="p">,</span>
+                                           <span class="n">end_date</span><span class="o">=</span><span class="n">current_datetime</span><span class="p">,</span> <span class="n">frequency</span><span class="o">=</span><span class="n">frequency</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">last_available_bars</span> <span class="o">=</span> <span class="n">prices_data_array</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">start_date</span><span class="p">]</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">tickers</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">PriceField</span><span class="o">.</span><span class="n">ohlcv</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">was_single_ticker_provided</span><span class="p">:</span>
+            <span class="n">last_available_bars</span> <span class="o">=</span> <span class="n">last_available_bars</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
+
+        <span class="k">return</span> <span class="n">last_available_bars</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_end_date_without_look_ahead</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Consider only the meaningful part of the date time (as the data can be gather at most with minutely</span>
+<span class="sd">        frequency, delete the seconds and microseconds time part). Moreover, the `end date` is always exclusive,</span>
+<span class="sd">        therefore it is only necessary to get the minimum of current time and the end date.</span>
+<span class="sd">        If end_date is None, it is assumed that it is equal to current time.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">current_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">RelativeDelta</span><span class="p">(</span><span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">end_date</span> <span class="o">=</span> <span class="n">end_date</span> <span class="o">+</span> <span class="n">RelativeDelta</span><span class="p">(</span><span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">end_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">current_time</span>
+
+        <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">current_time</span><span class="p">,</span> <span class="n">end_date</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_data_array_to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prices_data_array</span><span class="p">:</span> <span class="n">QFDataArray</span><span class="p">,</span> <span class="n">frequency</span><span class="p">:</span> <span class="n">Frequency</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts a QFDataArray into a DataFrame by removing the &quot;Price Field&quot; axis.</span>
+
+<span class="sd">        Every index (e.g. 15:00) denotes the close price of the time range beginning at this time (15:00 - 15:01)</span>
+<span class="sd">        The only exception is the time range 1 minute before market open (e.g. 9:29 - 9:30 if market opens 9:30). The</span>
+<span class="sd">        price for this time range, denotes the OPEN price of 9:30 - 9:31.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">original_dates</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">prices_data_array</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">to_index</span><span class="p">())</span>
+        <span class="n">dates</span> <span class="o">=</span> <span class="n">prices_data_array</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">dates</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">to_index</span><span class="p">()</span>
+        <span class="n">market_open_datetimes</span> <span class="o">=</span> <span class="p">[</span><span class="n">price_datetime</span> <span class="o">+</span> <span class="n">MarketOpenEvent</span><span class="o">.</span><span class="n">trigger_time</span><span class="p">()</span> <span class="k">for</span> <span class="n">price_datetime</span> <span class="ow">in</span> <span class="n">dates</span> <span class="k">if</span>
+                                 <span class="n">price_datetime</span> <span class="o">+</span> <span class="n">MarketOpenEvent</span><span class="o">.</span><span class="n">trigger_time</span><span class="p">()</span> <span class="ow">in</span> <span class="n">original_dates</span><span class="p">]</span>
+        <span class="n">shifted_open_datetimes</span> <span class="o">=</span> <span class="p">[</span><span class="n">price_datetime</span> <span class="o">-</span> <span class="n">frequency</span><span class="o">.</span><span class="n">time_delta</span><span class="p">()</span> <span class="k">for</span> <span class="n">price_datetime</span> <span class="ow">in</span> <span class="n">market_open_datetimes</span><span class="p">]</span>
+
+        <span class="n">new_dates</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">original_dates</span> <span class="o">+</span> <span class="n">shifted_open_datetimes</span><span class="p">))</span>
+        <span class="n">new_dates</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">new_dates</span><span class="p">)</span>
+        <span class="n">prices_df</span> <span class="o">=</span> <span class="n">PricesDataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">new_dates</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">prices_data_array</span><span class="o">.</span><span class="n">tickers</span><span class="p">)</span>
+
+        <span class="n">prices_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">shifted_open_datetimes</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> \
+            <span class="n">prices_data_array</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">market_open_datetimes</span><span class="p">,</span> <span class="p">:,</span> <span class="n">PriceField</span><span class="o">.</span><span class="n">Open</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">prices_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">original_dates</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">prices_data_array</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">original_dates</span><span class="p">,</span> <span class="p">:,</span> <span class="n">PriceField</span><span class="o">.</span><span class="n">Close</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+        <span class="k">return</span> <span class="n">prices_df</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

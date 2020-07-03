@@ -1,0 +1,9 @@
+UnderwaterChart
+=======================================================
+
+.. currentmodule:: qf_lib.plotting.charts.underwater_chart
+
+.. autoclass:: UnderwaterChart
+	:show-inheritance:
+	:autosummary:
+	:members:

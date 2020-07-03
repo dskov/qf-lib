@@ -1,0 +1,9 @@
+Aggregation
+============================================
+
+.. currentmodule:: qf_lib.common.enums.aggregations
+
+.. autoclass:: Aggregation
+	:show-inheritance:
+	:autosummary:
+	:members:
