@@ -52,8 +52,8 @@ setup(
         'xarray==0.11.0',
         'cvxopt==1.2.2',
 		'Pillow==5.4.1',
-		'patsy==0.5.1',
-    ],
+		'patsy==0.5.1'
+		],
     keywords='quantitative finance backtester',
     project_urls={
         'Source': 'https://github.com/quarkfin/qf-lib'
