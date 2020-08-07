@@ -37,7 +37,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="VolumeShareSlippage" href="qf_lib.backtesting.execution_handler.slippage.volume_share_slippage.VolumeShareSlippage.html" />
+    <link rel="next" title="BacktestSummaryElement" href="qf_lib.backtesting.fast_alpha_model_tester.backtest_summary.BacktestSummaryElement.html" />
     <link rel="prev" title="FixedSlippage" href="qf_lib.backtesting.execution_handler.slippage.fixed_slippage.FixedSlippage.html" /> 
 </head>
 
@@ -97,7 +97,6 @@
 <li class="toctree-l4"><a class="reference internal" href="qf_lib.backtesting.execution_handler.slippage.base.Slippage.html">Slippage</a></li>
 <li class="toctree-l4"><a class="reference internal" href="qf_lib.backtesting.execution_handler.slippage.fixed_slippage.FixedSlippage.html">FixedSlippage</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">PriceBasedSlippage</a></li>
-<li class="toctree-l4"><a class="reference internal" href="qf_lib.backtesting.execution_handler.slippage.volume_share_slippage.VolumeShareSlippage.html">VolumeShareSlippage</a></li>
 </ul>
 </li>
 </ul>
@@ -186,42 +185,9 @@
 <h1>PriceBasedSlippage<a class="headerlink" href="#pricebasedslippage" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="qf_lib.backtesting.execution_handler.slippage.price_based_slippage.PriceBasedSlippage">
-<em class="property">class </em><code class="sig-prename descclassname">qf_lib.backtesting.execution_handler.slippage.price_based_slippage.</code><code class="sig-name descname">PriceBasedSlippage</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">slippage_rate</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qf_lib/backtesting/execution_handler/slippage/price_based_slippage.html#PriceBasedSlippage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qf_lib.backtesting.execution_handler.slippage.price_based_slippage.PriceBasedSlippage" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">qf_lib.backtesting.execution_handler.slippage.price_based_slippage.</code><code class="sig-name descname">PriceBasedSlippage</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">slippage_rate</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">data_provider</span><span class="p">:</span> <span class="n"><a class="reference internal" href="qf_lib.data_providers.data_provider.DataProvider.html#qf_lib.data_providers.data_provider.DataProvider" title="qf_lib.data_providers.data_provider.DataProvider">qf_lib.data_providers.data_provider.DataProvider</a></span></em>, <em class="sig-param"><span class="n">contract_ticker_mapper</span><span class="p">:</span> <span class="n"><a class="reference internal" href="qf_lib.backtesting.contract.contract_to_ticker_conversion.base.ContractTickerMapper.html#qf_lib.backtesting.contract.contract_to_ticker_conversion.base.ContractTickerMapper" title="qf_lib.backtesting.contract.contract_to_ticker_conversion.base.ContractTickerMapper">qf_lib.backtesting.contract.contract_to_ticker_conversion.base.ContractTickerMapper</a></span></em>, <em class="sig-param"><span class="n">max_volume_share_limit</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qf_lib/backtesting/execution_handler/slippage/price_based_slippage.html#PriceBasedSlippage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qf_lib.backtesting.execution_handler.slippage.price_based_slippage.PriceBasedSlippage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="qf_lib.backtesting.execution_handler.slippage.base.Slippage.html#qf_lib.backtesting.execution_handler.slippage.base.Slippage" title="qf_lib.backtesting.execution_handler.slippage.base.Slippage"><code class="xref py py-class docutils literal notranslate"><span class="pre">qf_lib.backtesting.execution_handler.slippage.base.Slippage</span></code></a></p>
 <p>Calculates the slippage by using some fixed fraction of the current securities’ price (e.g. always 0.01%).</p>
-<p><strong>Methods</strong></p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.backtesting.execution_handler.slippage.price_based_slippage.PriceBasedSlippage.apply_slippage" title="qf_lib.backtesting.execution_handler.slippage.price_based_slippage.PriceBasedSlippage.apply_slippage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_slippage</span></code></a>(orders, no_slippage_fill_prices)</p></td>
-<td><p>Calculates fill prices for Orders.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt id="qf_lib.backtesting.execution_handler.slippage.price_based_slippage.PriceBasedSlippage.apply_slippage">
-<code class="sig-name descname">apply_slippage</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">orders</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span><a class="reference internal" href="qf_lib.backtesting.order.order.Order.html#qf_lib.backtesting.order.order.Order" title="qf_lib.backtesting.order.order.Order">qf_lib.backtesting.order.order.Order</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">no_slippage_fill_prices</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>float<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>Sequence<span class="p">[</span>float<span class="p">]</span><span class="p">, </span>Sequence<span class="p">[</span>int<span class="p">]</span><span class="p">]</span><a class="reference internal" href="../_modules/qf_lib/backtesting/execution_handler/slippage/price_based_slippage.html#PriceBasedSlippage.apply_slippage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qf_lib.backtesting.execution_handler.slippage.price_based_slippage.PriceBasedSlippage.apply_slippage" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates fill prices for Orders. For Orders that can’t be executed (missing security price, etc.) float(“nan”)
-will be returned.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>orders</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="qf_lib.backtesting.order.order.Order.html#qf_lib.backtesting.order.order.Order" title="qf_lib.backtesting.order.order.Order"><em>Order</em></a><em>]</em>) – sequence of Orders for which the fill price should be calculated</p></li>
-<li><p><strong>no_slippage_fill_prices</strong> (<em>Sequence</em><em>[</em><em>float</em><em>]</em>) – fill prices without a slippage applied. Each fill price corresponds to the Order from <cite>orders</cite> list</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>sequence of fill prices (order corresponds to the order of orders provided as an argument of the method)</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[Sequence[float], Sequence[int]]</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 </div>
@@ -234,7 +200,7 @@ will be returned.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="qf_lib.backtesting.execution_handler.slippage.volume_share_slippage.VolumeShareSlippage.html" class="btn btn-neutral float-right" title="VolumeShareSlippage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="qf_lib.backtesting.fast_alpha_model_tester.backtest_summary.BacktestSummaryElement.html" class="btn btn-neutral float-right" title="BacktestSummaryElement" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="qf_lib.backtesting.execution_handler.slippage.fixed_slippage.FixedSlippage.html" class="btn btn-neutral float-left" title="FixedSlippage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

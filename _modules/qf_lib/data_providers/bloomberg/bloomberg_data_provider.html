@@ -169,13 +169,13 @@
 <span class="c1">#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
 <span class="c1">#     See the License for the specific language governing permissions and</span>
 <span class="c1">#     limitations under the License.</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
 
-<span class="kn">import</span> <span class="nn">blpapi</span>
 <span class="kn">from</span> <span class="nn">qf_lib.common.enums.expiration_date_field</span> <span class="kn">import</span> <span class="n">ExpirationDateField</span>
-
 <span class="kn">from</span> <span class="nn">qf_lib.common.enums.frequency</span> <span class="kn">import</span> <span class="n">Frequency</span>
 <span class="kn">from</span> <span class="nn">qf_lib.common.enums.price_field</span> <span class="kn">import</span> <span class="n">PriceField</span>
 <span class="kn">from</span> <span class="nn">qf_lib.common.tickers.tickers</span> <span class="kn">import</span> <span class="n">BloombergTicker</span><span class="p">,</span> <span class="n">tickers_as_strings</span>
@@ -186,15 +186,23 @@
 <span class="kn">from</span> <span class="nn">qf_lib.containers.qf_data_array</span> <span class="kn">import</span> <span class="n">QFDataArray</span>
 <span class="kn">from</span> <span class="nn">qf_lib.containers.series.qf_series</span> <span class="kn">import</span> <span class="n">QFSeries</span>
 <span class="kn">from</span> <span class="nn">qf_lib.data_providers.abstract_price_data_provider</span> <span class="kn">import</span> <span class="n">AbstractPriceDataProvider</span>
-<span class="kn">from</span> <span class="nn">qf_lib.data_providers.bloomberg.bloomberg_names</span> <span class="kn">import</span> <span class="n">REF_DATA_SERVICE_URI</span>
-<span class="kn">from</span> <span class="nn">qf_lib.data_providers.bloomberg.exceptions</span> <span class="kn">import</span> <span class="n">BloombergError</span>
-<span class="kn">from</span> <span class="nn">qf_lib.data_providers.bloomberg.futures_data_provider</span> <span class="kn">import</span> <span class="n">FuturesDataProvider</span>
-<span class="kn">from</span> <span class="nn">qf_lib.data_providers.bloomberg.historical_data_provider</span> <span class="kn">import</span> <span class="n">HistoricalDataProvider</span>
-<span class="kn">from</span> <span class="nn">qf_lib.data_providers.bloomberg.reference_data_provider</span> <span class="kn">import</span> <span class="n">ReferenceDataProvider</span>
-<span class="kn">from</span> <span class="nn">qf_lib.data_providers.bloomberg.tabular_data_provider</span> <span class="kn">import</span> <span class="n">TabularDataProvider</span>
 <span class="kn">from</span> <span class="nn">qf_lib.data_providers.helpers</span> <span class="kn">import</span> <span class="n">normalize_data_array</span><span class="p">,</span> <span class="n">cast_dataframe_to_proper_type</span>
 <span class="kn">from</span> <span class="nn">qf_lib.data_providers.tickers_universe_provider</span> <span class="kn">import</span> <span class="n">TickersUniverseProvider</span>
 <span class="kn">from</span> <span class="nn">qf_lib.settings</span> <span class="kn">import</span> <span class="n">Settings</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">blpapi</span>
+
+    <span class="kn">from</span> <span class="nn">qf_lib.data_providers.bloomberg.futures_data_provider</span> <span class="kn">import</span> <span class="n">FuturesDataProvider</span>
+    <span class="kn">from</span> <span class="nn">qf_lib.data_providers.bloomberg.historical_data_provider</span> <span class="kn">import</span> <span class="n">HistoricalDataProvider</span>
+    <span class="kn">from</span> <span class="nn">qf_lib.data_providers.bloomberg.reference_data_provider</span> <span class="kn">import</span> <span class="n">ReferenceDataProvider</span>
+    <span class="kn">from</span> <span class="nn">qf_lib.data_providers.bloomberg.tabular_data_provider</span> <span class="kn">import</span> <span class="n">TabularDataProvider</span>
+    <span class="kn">from</span> <span class="nn">qf_lib.data_providers.bloomberg.exceptions</span> <span class="kn">import</span> <span class="n">BloombergError</span>
+    <span class="kn">from</span> <span class="nn">qf_lib.data_providers.bloomberg.bloomberg_names</span> <span class="kn">import</span> <span class="n">REF_DATA_SERVICE_URI</span>
+    <span class="n">is_blpapi_installed</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">is_blpapi_installed</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;No Bloomberg API installed.&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="BloombergDataProvider"><a class="viewcode-back" href="../../../../_autosummary/qf_lib.data_providers.bloomberg.bloomberg_data_provider.BloombergDataProvider.html#qf_lib.data_providers.bloomberg.bloomberg_data_provider.BloombergDataProvider">[docs]</a><span class="k">class</span> <span class="nc">BloombergDataProvider</span><span class="p">(</span><span class="n">AbstractPriceDataProvider</span><span class="p">,</span> <span class="n">TickersUniverseProvider</span><span class="p">):</span>
@@ -204,21 +212,32 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">Settings</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">settings</span>
-        <span class="n">session_options</span> <span class="o">=</span> <span class="n">blpapi</span><span class="o">.</span><span class="n">SessionOptions</span><span class="p">()</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">bloomberg</span><span class="o">.</span><span class="n">host</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">bloomberg</span><span class="o">.</span><span class="n">port</span>
-
-        <span class="n">session_options</span><span class="o">.</span><span class="n">setServerHost</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">)</span>
-        <span class="n">session_options</span><span class="o">.</span><span class="n">setServerPort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
-        <span class="n">session_options</span><span class="o">.</span><span class="n">setAutoRestartOnDisconnection</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">blpapi</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">session_options</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data_provider</span> <span class="o">=</span> <span class="n">HistoricalDataProvider</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_reference_data_provider</span> <span class="o">=</span> <span class="n">ReferenceDataProvider</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_tabular_data_provider</span> <span class="o">=</span> <span class="n">TabularDataProvider</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_futures_data_provider</span> <span class="o">=</span> <span class="n">FuturesDataProvider</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">connected</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">qf_logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">is_blpapi_installed</span><span class="p">:</span>
+            <span class="n">session_options</span> <span class="o">=</span> <span class="n">blpapi</span><span class="o">.</span><span class="n">SessionOptions</span><span class="p">()</span>
+            <span class="n">session_options</span><span class="o">.</span><span class="n">setServerHost</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">)</span>
+            <span class="n">session_options</span><span class="o">.</span><span class="n">setServerPort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
+            <span class="n">session_options</span><span class="o">.</span><span class="n">setAutoRestartOnDisconnection</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">blpapi</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">session_options</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data_provider</span> <span class="o">=</span> <span class="n">HistoricalDataProvider</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reference_data_provider</span> <span class="o">=</span> <span class="n">ReferenceDataProvider</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tabular_data_provider</span> <span class="o">=</span> <span class="n">TabularDataProvider</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_futures_data_provider</span> <span class="o">=</span> <span class="n">FuturesDataProvider</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_historical_data_provider</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reference_data_provider</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tabular_data_provider</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_futures_data_provider</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Couldn&#39;t import the Bloomberg API. Check if the necessary dependencies are installed.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">connected</span> <span class="o">=</span> <span class="kc">False</span>
 
 <div class="viewcode-block" id="BloombergDataProvider.connect"><a class="viewcode-back" href="../../../../_autosummary/qf_lib.data_providers.bloomberg.bloomberg_data_provider.BloombergDataProvider.html#qf_lib.data_providers.bloomberg.bloomberg_data_provider.BloombergDataProvider.connect">[docs]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -226,6 +245,10 @@
 <span class="sd">        Connecting might take about 10-15 seconds</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connected</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_blpapi_installed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Couldn&#39;t import the Bloomberg API. Check if the necessary dependencies are installed.&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">start</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Failed to start session with host: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; on port: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">))</span>
             <span class="k">return</span>

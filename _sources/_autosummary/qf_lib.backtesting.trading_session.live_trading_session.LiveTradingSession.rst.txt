@@ -1,9 +1,0 @@
-LiveTradingSession
-==========================================================================
-
-.. currentmodule:: qf_lib.backtesting.trading_session.live_trading_session
-
-.. autoclass:: LiveTradingSession
-	:show-inheritance:
-	:autosummary:
-	:members:

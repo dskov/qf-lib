@@ -97,7 +97,6 @@
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Slippage</a></li>
 <li class="toctree-l4"><a class="reference internal" href="qf_lib.backtesting.execution_handler.slippage.fixed_slippage.FixedSlippage.html">FixedSlippage</a></li>
 <li class="toctree-l4"><a class="reference internal" href="qf_lib.backtesting.execution_handler.slippage.price_based_slippage.PriceBasedSlippage.html">PriceBasedSlippage</a></li>
-<li class="toctree-l4"><a class="reference internal" href="qf_lib.backtesting.execution_handler.slippage.volume_share_slippage.VolumeShareSlippage.html">VolumeShareSlippage</a></li>
 </ul>
 </li>
 </ul>
@@ -186,8 +185,22 @@
 <h1>Slippage<a class="headerlink" href="#slippage" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="qf_lib.backtesting.execution_handler.slippage.base.Slippage">
-<em class="property">class </em><code class="sig-prename descclassname">qf_lib.backtesting.execution_handler.slippage.base.</code><code class="sig-name descname">Slippage</code><a class="reference internal" href="../_modules/qf_lib/backtesting/execution_handler/slippage/base.html#Slippage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qf_lib.backtesting.execution_handler.slippage.base.Slippage" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">qf_lib.backtesting.execution_handler.slippage.base.</code><code class="sig-name descname">Slippage</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_provider</span><span class="p">:</span> <span class="n"><a class="reference internal" href="qf_lib.data_providers.data_provider.DataProvider.html#qf_lib.data_providers.data_provider.DataProvider" title="qf_lib.data_providers.data_provider.DataProvider">qf_lib.data_providers.data_provider.DataProvider</a></span></em>, <em class="sig-param"><span class="n">contract_ticker_mapper</span><span class="p">:</span> <span class="n"><a class="reference internal" href="qf_lib.backtesting.contract.contract_to_ticker_conversion.base.ContractTickerMapper.html#qf_lib.backtesting.contract.contract_to_ticker_conversion.base.ContractTickerMapper" title="qf_lib.backtesting.contract.contract_to_ticker_conversion.base.ContractTickerMapper">qf_lib.backtesting.contract.contract_to_ticker_conversion.base.ContractTickerMapper</a></span></em>, <em class="sig-param"><span class="n">max_volume_share_limit</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qf_lib/backtesting/execution_handler/slippage/base.html#Slippage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qf_lib.backtesting.execution_handler.slippage.base.Slippage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class for slippage models.
+It can limit the Order’s volume. This model needs to know the daily volume of the traded asset, thus it uses the
+data provider in order to be able to access the volume value for the day.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_provider</strong> (<a class="reference internal" href="qf_lib.data_providers.data_provider.DataProvider.html#qf_lib.data_providers.data_provider.DataProvider" title="qf_lib.data_providers.data_provider.DataProvider"><em>DataProvider</em></a>) – DataProvider component</p></li>
+<li><p><strong>contract_ticker_mapper</strong> (<a class="reference internal" href="qf_lib.backtesting.contract.contract_to_ticker_conversion.base.ContractTickerMapper.html#qf_lib.backtesting.contract.contract_to_ticker_conversion.base.ContractTickerMapper" title="qf_lib.backtesting.contract.contract_to_ticker_conversion.base.ContractTickerMapper"><em>ContractTickerMapper</em></a>) – ContractTickerMapper component</p></li>
+<li><p><strong>max_volume_share_limit</strong> (<em>float</em><em>, </em><em>None</em>) – number from range [0,1] which denotes how big (volume-wise) the Order can be i.e. if it’s 0.5 and a daily
+volume for a given asset is 1,000,000 USD, then max volume of the Order can be 500,000 USD. If not provided, no
+volume checks are performed.</p></li>
+</ul>
+</dd>
+</dl>
 <p><strong>Methods</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -195,30 +208,41 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.backtesting.execution_handler.slippage.base.Slippage.apply_slippage" title="qf_lib.backtesting.execution_handler.slippage.base.Slippage.apply_slippage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_slippage</span></code></a>(orders, no_slippage_fill_prices)</p></td>
-<td><p>Calculates fill prices for Orders.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.backtesting.execution_handler.slippage.base.Slippage.apply_slippage" title="qf_lib.backtesting.execution_handler.slippage.base.Slippage.apply_slippage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_slippage</span></code></a>(date, orders, …)</p></td>
+<td><p>Calculates fill prices and quantities for Orders.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#qf_lib.backtesting.execution_handler.slippage.base.Slippage.set_data_provider" title="qf_lib.backtesting.execution_handler.slippage.base.Slippage.set_data_provider"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_data_provider</span></code></a>(data_provider)</p></td>
+<td><p>Sets the data provider.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py method">
 <dt id="qf_lib.backtesting.execution_handler.slippage.base.Slippage.apply_slippage">
-<em class="property">abstract </em><code class="sig-name descname">apply_slippage</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">orders</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span><a class="reference internal" href="qf_lib.backtesting.order.order.Order.html#qf_lib.backtesting.order.order.Order" title="qf_lib.backtesting.order.order.Order">qf_lib.backtesting.order.order.Order</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">no_slippage_fill_prices</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>float<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>Sequence<span class="p">[</span>float<span class="p">]</span><span class="p">, </span>Sequence<span class="p">[</span>int<span class="p">]</span><span class="p">]</span><a class="reference internal" href="../_modules/qf_lib/backtesting/execution_handler/slippage/base.html#Slippage.apply_slippage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qf_lib.backtesting.execution_handler.slippage.base.Slippage.apply_slippage" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates fill prices for Orders. For Orders that can’t be executed (missing security price, etc.) float(“nan”)
-will be returned.</p>
+<code class="sig-name descname">apply_slippage</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">date</span><span class="p">:</span> <span class="n">datetime.datetime</span></em>, <em class="sig-param"><span class="n">orders</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span><a class="reference internal" href="qf_lib.backtesting.order.order.Order.html#qf_lib.backtesting.order.order.Order" title="qf_lib.backtesting.order.order.Order">qf_lib.backtesting.order.order.Order</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">no_slippage_fill_prices</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>float<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>Sequence<span class="p">[</span>float<span class="p">]</span><span class="p">, </span>Sequence<span class="p">[</span>int<span class="p">]</span><span class="p">]</span><a class="reference internal" href="../_modules/qf_lib/backtesting/execution_handler/slippage/base.html#Slippage.apply_slippage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qf_lib.backtesting.execution_handler.slippage.base.Slippage.apply_slippage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates fill prices and quantities for Orders. For Orders that can’t be executed (missing security price,
+etc.) float(“nan”) will be returned.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>date</strong> (<em>datetime</em>) – time when the slippage is applied</p></li>
 <li><p><strong>orders</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="qf_lib.backtesting.order.order.Order.html#qf_lib.backtesting.order.order.Order" title="qf_lib.backtesting.order.order.Order"><em>Order</em></a><em>]</em>) – sequence of Orders for which the fill price should be calculated</p></li>
 <li><p><strong>no_slippage_fill_prices</strong> (<em>Sequence</em><em>[</em><em>float</em><em>]</em>) – fill prices without a slippage applied. Each fill price corresponds to the Order from <cite>orders</cite> list</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>sequence of fill prices (order corresponds to the order of orders provided as an argument of the method)</p>
+<dd class="field-even"><p>sequence of fill prices (order corresponds to the order of orders provided as an argument of the method),
+sequence of fill order quantities</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Tuple[Sequence[float], Sequence[int]]</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="qf_lib.backtesting.execution_handler.slippage.base.Slippage.set_data_provider">
+<code class="sig-name descname">set_data_provider</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_provider</span><span class="p">:</span> <span class="n"><a class="reference internal" href="qf_lib.data_providers.data_provider.DataProvider.html#qf_lib.data_providers.data_provider.DataProvider" title="qf_lib.data_providers.data_provider.DataProvider">qf_lib.data_providers.data_provider.DataProvider</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qf_lib/backtesting/execution_handler/slippage/base.html#Slippage.set_data_provider"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qf_lib.backtesting.execution_handler.slippage.base.Slippage.set_data_provider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the data provider.</p>
 </dd></dl>
 
 </dd></dl>

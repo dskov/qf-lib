@@ -171,12 +171,13 @@
 <span class="c1">#     limitations under the License.</span>
 
 <span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Optional</span>
 
+<span class="kn">from</span> <span class="nn">qf_lib.backtesting.contract.contract_to_ticker_conversion.base</span> <span class="kn">import</span> <span class="n">ContractTickerMapper</span>
 <span class="kn">from</span> <span class="nn">qf_lib.backtesting.execution_handler.slippage.base</span> <span class="kn">import</span> <span class="n">Slippage</span>
-<span class="kn">from</span> <span class="nn">qf_lib.backtesting.order.execution_style</span> <span class="kn">import</span> <span class="n">MarketOrder</span><span class="p">,</span> <span class="n">StopOrder</span>
 <span class="kn">from</span> <span class="nn">qf_lib.backtesting.order.order</span> <span class="kn">import</span> <span class="n">Order</span>
-<span class="kn">from</span> <span class="nn">qf_lib.common.utils.logging.qf_parent_logger</span> <span class="kn">import</span> <span class="n">qf_logger</span>
+<span class="kn">from</span> <span class="nn">qf_lib.data_providers.data_provider</span> <span class="kn">import</span> <span class="n">DataProvider</span>
 
 
 <div class="viewcode-block" id="PriceBasedSlippage"><a class="viewcode-back" href="../../../../../_autosummary/qf_lib.backtesting.execution_handler.slippage.price_based_slippage.PriceBasedSlippage.html#qf_lib.backtesting.execution_handler.slippage.price_based_slippage.PriceBasedSlippage">[docs]</a><span class="k">class</span> <span class="nc">PriceBasedSlippage</span><span class="p">(</span><span class="n">Slippage</span><span class="p">):</span>
@@ -184,30 +185,23 @@
 <span class="sd">    Calculates the slippage by using some fixed fraction of the current securities&#39; price (e.g. always 0.01%).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">slippage_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">slippage_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">data_provider</span><span class="p">:</span> <span class="n">DataProvider</span><span class="p">,</span> <span class="n">contract_ticker_mapper</span><span class="p">:</span> <span class="n">ContractTickerMapper</span><span class="p">,</span>
+                 <span class="n">max_volume_share_limit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data_provider</span><span class="p">,</span> <span class="n">contract_ticker_mapper</span><span class="p">,</span> <span class="n">max_volume_share_limit</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">slippage_rate</span> <span class="o">=</span> <span class="n">slippage_rate</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span> <span class="o">=</span> <span class="n">qf_logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PriceBasedSlippage.apply_slippage"><a class="viewcode-back" href="../../../../../_autosummary/qf_lib.backtesting.execution_handler.slippage.price_based_slippage.PriceBasedSlippage.html#qf_lib.backtesting.execution_handler.slippage.price_based_slippage.PriceBasedSlippage.apply_slippage">[docs]</a>    <span class="k">def</span> <span class="nf">apply_slippage</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">orders</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Order</span><span class="p">],</span> <span class="n">no_slippage_fill_prices</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
-        <span class="n">fully_filled_order_volumes</span> <span class="o">=</span> <span class="p">[</span><span class="n">order</span><span class="o">.</span><span class="n">quantity</span> <span class="k">for</span> <span class="n">order</span> <span class="ow">in</span> <span class="n">orders</span><span class="p">]</span>
+    <span class="k">def</span> <span class="nf">_get_fill_prices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date</span><span class="p">:</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">orders</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Order</span><span class="p">],</span> <span class="n">no_slippage_fill_prices</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+                         <span class="n">fill_volumes</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">slippage_rate</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">no_slippage_fill_prices</span><span class="p">,</span> <span class="n">fully_filled_order_volumes</span>
+            <span class="k">return</span> <span class="n">no_slippage_fill_prices</span>
 
         <span class="n">fill_prices</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">order</span><span class="p">,</span> <span class="n">no_slippage_price</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">orders</span><span class="p">,</span> <span class="n">no_slippage_fill_prices</span><span class="p">):</span>
-            <span class="n">execution_style</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="n">execution_style</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">execution_style</span><span class="p">,</span> <span class="p">(</span><span class="n">MarketOrder</span><span class="p">,</span> <span class="n">StopOrder</span><span class="p">)):</span>
-                <span class="n">fill_price</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_single_fill_price</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">no_slippage_price</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Unsupported execution style: </span><span class="si">{}</span><span class="s2">. No slippage was applied&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">execution_style</span><span class="p">))</span>
-                <span class="n">fill_price</span> <span class="o">=</span> <span class="n">no_slippage_price</span>
-
+            <span class="n">fill_price</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_single_fill_price</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">no_slippage_price</span><span class="p">)</span>
             <span class="n">fill_prices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fill_price</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">fill_prices</span><span class="p">,</span> <span class="n">fully_filled_order_volumes</span></div>
+        <span class="k">return</span> <span class="n">fill_prices</span>
 
     <span class="k">def</span> <span class="nf">_get_single_fill_price</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">no_slippage_price</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">no_slippage_price</span><span class="p">):</span>

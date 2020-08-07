@@ -1,9 +1,0 @@
-LiveTradingMonitor
-=====================================================================
-
-.. currentmodule:: qf_lib.backtesting.monitoring.live_trading_monitor
-
-.. autoclass:: LiveTradingMonitor
-	:show-inheritance:
-	:autosummary:
-	:members:

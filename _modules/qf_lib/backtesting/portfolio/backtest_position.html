@@ -375,6 +375,15 @@
                       <span class="n">exit_price</span><span class="o">=</span><span class="n">transaction</span><span class="o">.</span><span class="n">price</span><span class="p">,</span>
                       <span class="n">commission</span><span class="o">=</span><span class="n">commission</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">trade</span></div></div>
+
+
+<span class="k">class</span> <span class="nc">BacktestPositionSummary</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backtest_position</span><span class="p">:</span> <span class="n">BacktestPosition</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">contract</span> <span class="o">=</span> <span class="n">backtest_position</span><span class="o">.</span><span class="n">contract</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_exposure</span> <span class="o">=</span> <span class="n">backtest_position</span><span class="o">.</span><span class="n">total_exposure</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">market_values</span> <span class="o">=</span> <span class="n">backtest_position</span><span class="o">.</span><span class="n">market_value</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unrealised_pnl</span> <span class="o">=</span> <span class="n">backtest_position</span><span class="o">.</span><span class="n">unrealised_pnl</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">=</span> <span class="n">backtest_position</span><span class="o">.</span><span class="n">direction</span>
 </pre></div>
 
            </div>
