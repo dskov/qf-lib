@@ -1,4 +1,4 @@
-VerticalSpanDecorator
+﻿VerticalSpanDecorator
 ========================================================================
 
 .. currentmodule:: qf_lib.plotting.decorators.vertical_span_decorator

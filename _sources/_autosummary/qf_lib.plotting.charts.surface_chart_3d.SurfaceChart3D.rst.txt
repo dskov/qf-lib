@@ -1,4 +1,4 @@
-SurfaceChart3D
+﻿SurfaceChart3D
 ======================================================
 
 .. currentmodule:: qf_lib.plotting.charts.surface_chart_3d

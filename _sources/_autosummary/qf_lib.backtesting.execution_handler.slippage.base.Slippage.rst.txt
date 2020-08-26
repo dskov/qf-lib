@@ -1,4 +1,4 @@
-Slippage
+﻿Slippage
 ===========================================================
 
 .. currentmodule:: qf_lib.backtesting.execution_handler.slippage.base

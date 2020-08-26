@@ -1,4 +1,4 @@
-sqn
+﻿sqn
 ===================================
 
 .. currentmodule:: qf_lib.common.utils.returns.sqn

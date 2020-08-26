@@ -1,4 +1,4 @@
-KellyPortfolio
+﻿KellyPortfolio
 =============================================================================
 
 .. currentmodule:: qf_lib.portfolio_construction.portfolio_models.kelly_portfolio

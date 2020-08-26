@@ -1,4 +1,4 @@
-ContractTickerMapper
+﻿ContractTickerMapper
 ===================================================================================
 
 .. currentmodule:: qf_lib.backtesting.contract.contract_to_ticker_conversion.base

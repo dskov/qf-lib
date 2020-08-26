@@ -1,4 +1,4 @@
-HeatMapChart
+﻿HeatMapChart
 =========================================================
 
 .. currentmodule:: qf_lib.plotting.charts.heatmap.heatmap_chart

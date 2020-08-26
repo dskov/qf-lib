@@ -1,4 +1,4 @@
-TopDrawdownDecorator
+﻿TopDrawdownDecorator
 ======================================================================
 
 .. currentmodule:: qf_lib.plotting.decorators.top_drawdown_decorator

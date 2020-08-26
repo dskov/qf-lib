@@ -200,7 +200,7 @@
 </ul>
 </dd>
 </dl>
-<p><strong>Methods</strong></p>
+<p><strong>Methods:</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -216,7 +216,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.plotting.charts.chart.Chart.close" title="qf_lib.plotting.charts.chart.Chart.close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code></a>()</p></td>
 <td><p>Closes the window containing the figure.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qf_lib.plotting.charts.chart.Chart.determine_end_x" title="qf_lib.plotting.charts.chart.Chart.determine_end_x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">determine_end_x</span></code></a>(start, series_list, …)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qf_lib.plotting.charts.chart.Chart.determine_end_x" title="qf_lib.plotting.charts.chart.Chart.determine_end_x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">determine_end_x</span></code></a>(start, series_list)</p></td>
 <td><p>Implements a heuristic for determining the x-axis end date based on a start date and series list.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.plotting.charts.chart.Chart.extract_series_data" title="qf_lib.plotting.charts.chart.Chart.extract_series_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_series_data</span></code></a>()</p></td>
@@ -225,10 +225,10 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#qf_lib.plotting.charts.chart.Chart.get_axes_colors" title="qf_lib.plotting.charts.chart.Chart.get_axes_colors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_axes_colors</span></code></a>()</p></td>
 <td><p>Returns the list of colors used for plotting on each Axes object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.plotting.charts.chart.Chart.plot" title="qf_lib.plotting.charts.chart.Chart.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>(figsize, float] = None)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.plotting.charts.chart.Chart.plot" title="qf_lib.plotting.charts.chart.Chart.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>([figsize])</p></td>
 <td><p>Plots the chart.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qf_lib.plotting.charts.chart.Chart.render_as_base64_image" title="qf_lib.plotting.charts.chart.Chart.render_as_base64_image"><code class="xref py py-obj docutils literal notranslate"><span class="pre">render_as_base64_image</span></code></a>(figsize, …)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qf_lib.plotting.charts.chart.Chart.render_as_base64_image" title="qf_lib.plotting.charts.chart.Chart.render_as_base64_image"><code class="xref py py-obj docutils literal notranslate"><span class="pre">render_as_base64_image</span></code></a>([figsize, dpi, optimise])</p></td>
 <td><p>Plots the chart and returns the base64 image.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.plotting.charts.chart.Chart.setup_secondary_axes_if_necessary" title="qf_lib.plotting.charts.chart.Chart.setup_secondary_axes_if_necessary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_secondary_axes_if_necessary</span></code></a>()</p></td>
@@ -239,7 +239,7 @@
 </tr>
 </tbody>
 </table>
-<p><strong>Attributes</strong></p>
+<p><strong>Attributes:</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -253,10 +253,10 @@
 <td><p>A secondary axes on which data is plotted.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.plotting.charts.chart.Chart.tick_fontweight" title="qf_lib.plotting.charts.chart.Chart.tick_fontweight"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tick_fontweight</span></code></a></p></td>
-<td><p>x and y ticks’ labels’ font weight. Acceptable values:</p></td>
+<td><p>x and y ticks’ labels’ font weight. Acceptable values: For more info, see: <a class="reference external" href="http://matplotlib.org/api/text_api.html#matplotlib.text.Text">http://matplotlib.org/api/text_api.html#matplotlib.text.Text</a> Acceptable values: [a numeric value in range 0-1000 | ‘ultralight’ | ‘light’ | ‘normal’ | ‘regular’ | ‘book’ | ‘medium’ | ‘roman’ <a href="#id1"><span class="problematic" id="id2">|</span></a>‘semibold’ | ‘demibold’ | ‘demi’ | ‘bold’ | ‘heavy’ | ‘extra bold’ | ‘black’ ].</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#qf_lib.plotting.charts.chart.Chart.tick_fontsize" title="qf_lib.plotting.charts.chart.Chart.tick_fontsize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tick_fontsize</span></code></a></p></td>
-<td><p>x and y ticks’ labels’ font size. Acceptable values:</p></td>
+<td><p>x and y ticks’ labels’ font size.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.plotting.charts.chart.Chart.tick_color" title="qf_lib.plotting.charts.chart.Chart.tick_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tick_color</span></code></a></p></td>
 <td><p>Foreground color of all x and y ticks’ labels.</p></td>
@@ -381,7 +381,7 @@ Any matplotlib color, for example “black” or “#8ac72e”.</p>
 For more info, see: <a class="reference external" href="http://matplotlib.org/api/text_api.html#matplotlib.text.Text">http://matplotlib.org/api/text_api.html#matplotlib.text.Text</a>
 Acceptable values:
 [a numeric value in range 0-1000 | ‘ultralight’ | ‘light’ | ‘normal’ | ‘regular’ | ‘book’ | ‘medium’ |
-‘roman’ <a href="#id1"><span class="problematic" id="id2">|</span></a>‘semibold’ | ‘demibold’ | ‘demi’ | ‘bold’ | ‘heavy’ | ‘extra bold’ | ‘black’ ]</p>
+‘roman’ <a href="#id3"><span class="problematic" id="id4">|</span></a>‘semibold’ | ‘demibold’ | ‘demi’ | ‘bold’ | ‘heavy’ | ‘extra bold’ | ‘black’ ]</p>
 </dd></dl>
 
 </dd></dl>

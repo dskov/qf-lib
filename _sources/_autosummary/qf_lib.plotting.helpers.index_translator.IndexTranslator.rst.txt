@@ -1,4 +1,4 @@
-IndexTranslator
+﻿IndexTranslator
 ========================================================
 
 .. currentmodule:: qf_lib.plotting.helpers.index_translator

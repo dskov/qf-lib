@@ -1,4 +1,4 @@
-create_holdings_chart
+﻿create_holdings_chart
 ===================================================================
 
 .. currentmodule:: qf_lib.plotting.helpers.create_holdings_chart

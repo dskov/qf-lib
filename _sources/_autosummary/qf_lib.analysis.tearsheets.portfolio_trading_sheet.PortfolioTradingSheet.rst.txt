@@ -1,4 +1,4 @@
-PortfolioTradingSheet
+﻿PortfolioTradingSheet
 ========================================================================
 
 .. currentmodule:: qf_lib.analysis.tearsheets.portfolio_trading_sheet

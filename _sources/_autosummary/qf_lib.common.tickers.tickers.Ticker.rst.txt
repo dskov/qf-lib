@@ -1,4 +1,4 @@
-Ticker
+﻿Ticker
 ====================================
 
 .. currentmodule:: qf_lib.common.tickers.tickers

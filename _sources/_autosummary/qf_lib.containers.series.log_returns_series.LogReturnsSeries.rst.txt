@@ -1,4 +1,4 @@
-LogReturnsSeries
+﻿LogReturnsSeries
 ============================================================
 
 .. currentmodule:: qf_lib.containers.series.log_returns_series

@@ -1,4 +1,4 @@
-BacktestMonitor
+﻿BacktestMonitor
 ==============================================================
 
 .. currentmodule:: qf_lib.backtesting.monitoring.backtest_monitor

@@ -1,4 +1,4 @@
-TrendStrengthSheet
+﻿TrendStrengthSheet
 =========================================================================
 
 .. currentmodule:: qf_lib.analysis.breakout_strength.trend_strength_sheet

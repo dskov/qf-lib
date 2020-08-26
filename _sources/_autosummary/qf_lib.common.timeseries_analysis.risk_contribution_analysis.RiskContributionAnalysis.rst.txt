@@ -1,4 +1,4 @@
-RiskContributionAnalysis
+﻿RiskContributionAnalysis
 =====================================================================================
 
 .. currentmodule:: qf_lib.common.timeseries_analysis.risk_contribution_analysis

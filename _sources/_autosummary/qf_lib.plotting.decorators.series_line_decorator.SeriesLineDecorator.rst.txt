@@ -1,4 +1,4 @@
-SeriesLineDecorator
+﻿SeriesLineDecorator
 ====================================================================
 
 .. currentmodule:: qf_lib.plotting.decorators.series_line_decorator

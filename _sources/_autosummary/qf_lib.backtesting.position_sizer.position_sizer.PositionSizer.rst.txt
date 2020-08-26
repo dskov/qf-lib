@@ -1,4 +1,4 @@
-PositionSizer
+﻿PositionSizer
 ==============================================================
 
 .. currentmodule:: qf_lib.backtesting.position_sizer.position_sizer

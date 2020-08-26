@@ -1,0 +1,9 @@
+﻿FuturesAlphaModelStrategy
+=====================================================================================
+
+.. currentmodule:: qf_lib.backtesting.alpha_model.futures_alpha_model_strategy
+
+.. autoclass:: FuturesAlphaModelStrategy
+	:show-inheritance:
+	:autosummary:
+	:members:

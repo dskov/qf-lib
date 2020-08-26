@@ -1,4 +1,4 @@
-GeneralPriceProvider
+﻿GeneralPriceProvider
 =================================================================
 
 .. currentmodule:: qf_lib.data_providers.general_price_provider

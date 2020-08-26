@@ -1,4 +1,4 @@
-Timer
+﻿Timer
 =========================================
 
 .. currentmodule:: qf_lib.common.utils.dateutils.timer

@@ -1,4 +1,4 @@
-AbstractDocument
+﻿AbstractDocument
 =========================================================
 
 .. currentmodule:: qf_lib.analysis.common.abstract_document

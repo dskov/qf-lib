@@ -91,6 +91,8 @@
 <li class="toctree-l3"><a class="reference internal" href="qf_lib.backtesting.alpha_model.alpha_model.AlphaModelSettings.html">AlphaModelSettings</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">AlphaModel</a></li>
 <li class="toctree-l3"><a class="reference internal" href="qf_lib.backtesting.alpha_model.alpha_model_factory.AlphaModelFactory.html">AlphaModelFactory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qf_lib.backtesting.alpha_model.alpha_model_strategy.AlphaModelStrategy.html">AlphaModelStrategy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qf_lib.backtesting.alpha_model.futures_alpha_model_strategy.FuturesAlphaModelStrategy.html">FuturesAlphaModelStrategy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="qf_lib.backtesting.alpha_model.signal.Signal.html">Signal</a></li>
 </ul>
 </li>
@@ -194,7 +196,18 @@ the stop-loss should be placed.</p></li>
 </ul>
 </dd>
 </dl>
-<p><strong>Methods</strong></p>
+<dl class="py attribute">
+<dt id="qf_lib.backtesting.alpha_model.alpha_model.AlphaModel.settings">
+<code class="sig-name descname">settings</code><a class="headerlink" href="#qf_lib.backtesting.alpha_model.alpha_model.AlphaModel.settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Holds parameters of a parametrized model used in production</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="qf_lib.backtesting.alpha_model.alpha_model.AlphaModelSettings.html#qf_lib.backtesting.alpha_model.alpha_model.AlphaModelSettings" title="qf_lib.backtesting.alpha_model.alpha_model.AlphaModelSettings">AlphaModelSettings</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p><strong>Methods:</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -212,17 +225,6 @@ the stop-loss should be placed.</p></li>
 </tr>
 </tbody>
 </table>
-<dl class="py attribute">
-<dt id="qf_lib.backtesting.alpha_model.alpha_model.AlphaModel.settings">
-<code class="sig-name descname">settings</code><a class="headerlink" href="#qf_lib.backtesting.alpha_model.alpha_model.AlphaModel.settings" title="Permalink to this definition">¶</a></dt>
-<dd><p>Holds parameters of a parametrized model used in production</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="qf_lib.backtesting.alpha_model.alpha_model.AlphaModelSettings.html#qf_lib.backtesting.alpha_model.alpha_model.AlphaModelSettings" title="qf_lib.backtesting.alpha_model.alpha_model.AlphaModelSettings">AlphaModelSettings</a></p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt id="qf_lib.backtesting.alpha_model.alpha_model.AlphaModel.calculate_exposure">
 <em class="property">abstract </em><code class="sig-name descname">calculate_exposure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ticker</span><span class="p">:</span> <span class="n"><a class="reference internal" href="qf_lib.common.tickers.tickers.Ticker.html#qf_lib.common.tickers.tickers.Ticker" title="qf_lib.common.tickers.tickers.Ticker">qf_lib.common.tickers.tickers.Ticker</a></span></em>, <em class="sig-param"><span class="n">current_exposure</span><span class="p">:</span> <span class="n">qf_lib.backtesting.alpha_model.exposure_enum.Exposure</span></em><span class="sig-paren">)</span> &#x2192; qf_lib.backtesting.alpha_model.exposure_enum.Exposure<a class="reference internal" href="../_modules/qf_lib/backtesting/alpha_model/alpha_model.html#AlphaModel.calculate_exposure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qf_lib.backtesting.alpha_model.alpha_model.AlphaModel.calculate_exposure" title="Permalink to this definition">¶</a></dt>

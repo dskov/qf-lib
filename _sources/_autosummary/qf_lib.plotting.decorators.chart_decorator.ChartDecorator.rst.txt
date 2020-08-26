@@ -1,4 +1,4 @@
-ChartDecorator
+﻿ChartDecorator
 =========================================================
 
 .. currentmodule:: qf_lib.plotting.decorators.chart_decorator

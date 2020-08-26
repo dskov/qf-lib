@@ -1,4 +1,4 @@
-DataCleaner
+﻿DataCleaner
 ============================================
 
 .. currentmodule:: qf_lib.common.utils.data_cleaner

@@ -37,7 +37,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="OrderFactory" href="qf_lib.backtesting.order.order_factory.OrderFactory.html" />
+    <link rel="next" title="LiveTradingMonitor" href="qf_lib.backtesting.monitoring.live_trading_monitor.LiveTradingMonitor.html" />
     <link rel="prev" title="BacktestResult" href="qf_lib.backtesting.monitoring.backtest_result.BacktestResult.html" /> 
 </head>
 
@@ -98,6 +98,8 @@
 <li class="toctree-l3"><a class="reference internal" href="qf_lib.backtesting.monitoring.backtest_monitor.BacktestMonitor.html">BacktestMonitor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="qf_lib.backtesting.monitoring.backtest_result.BacktestResult.html">BacktestResult</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">LightBacktestMonitor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qf_lib.backtesting.monitoring.live_trading_monitor.LiveTradingMonitor.html">LiveTradingMonitor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qf_lib.backtesting.monitoring.past_signals_generator.PastSignalsGenerator.html">PastSignalsGenerator</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../backtesting.html#order">order</a></li>
@@ -187,14 +189,14 @@
 <p>This Monitor will be used to monitor backtest run from the script.
 It will display the portfolio value as the backtest progresses and generate a PDF at the end.
 It is not suitable for the Web application</p>
-<p><strong>Methods</strong></p>
+<p><strong>Methods:</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.backtesting.monitoring.light_backtest_monitor.LightBacktestMonitor.end_of_day_update" title="qf_lib.backtesting.monitoring.light_backtest_monitor.LightBacktestMonitor.end_of_day_update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">end_of_day_update</span></code></a>(timestamp)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.backtesting.monitoring.light_backtest_monitor.LightBacktestMonitor.end_of_day_update" title="qf_lib.backtesting.monitoring.light_backtest_monitor.LightBacktestMonitor.end_of_day_update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">end_of_day_update</span></code></a>([timestamp])</p></td>
 <td><p>Update line chart with current timeseries, buy only once in self._nr_of_days</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#qf_lib.backtesting.monitoring.light_backtest_monitor.LightBacktestMonitor.record_transaction" title="qf_lib.backtesting.monitoring.light_backtest_monitor.LightBacktestMonitor.record_transaction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">record_transaction</span></code></a>(transaction)</p></td>
@@ -226,7 +228,7 @@ It is not suitable for the Web application</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="qf_lib.backtesting.order.order_factory.OrderFactory.html" class="btn btn-neutral float-right" title="OrderFactory" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="qf_lib.backtesting.monitoring.live_trading_monitor.LiveTradingMonitor.html" class="btn btn-neutral float-right" title="LiveTradingMonitor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="qf_lib.backtesting.monitoring.backtest_result.BacktestResult.html" class="btn btn-neutral float-left" title="BacktestResult" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

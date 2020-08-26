@@ -1,4 +1,4 @@
-KDEChart
+﻿KDEChart
 =========================================
 
 .. currentmodule:: qf_lib.plotting.charts.kde_chart

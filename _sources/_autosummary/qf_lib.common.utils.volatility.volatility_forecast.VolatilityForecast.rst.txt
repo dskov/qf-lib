@@ -1,4 +1,4 @@
-VolatilityForecast
+﻿VolatilityForecast
 =====================================================================
 
 .. currentmodule:: qf_lib.common.utils.volatility.volatility_forecast

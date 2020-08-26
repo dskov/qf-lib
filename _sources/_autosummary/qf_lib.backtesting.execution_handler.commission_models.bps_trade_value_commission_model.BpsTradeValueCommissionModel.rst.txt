@@ -1,4 +1,4 @@
-BpsTradeValueCommissionModel
+﻿BpsTradeValueCommissionModel
 ====================================================================================================================
 
 .. currentmodule:: qf_lib.backtesting.execution_handler.commission_models.bps_trade_value_commission_model

@@ -1,4 +1,4 @@
-get_grouping_for_frequency
+﻿get_grouping_for_frequency
 =====================================================================
 
 .. currentmodule:: qf_lib.common.utils.returns.index_grouping

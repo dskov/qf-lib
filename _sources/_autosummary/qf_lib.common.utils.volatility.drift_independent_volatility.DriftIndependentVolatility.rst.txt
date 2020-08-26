@@ -1,4 +1,4 @@
-DriftIndependentVolatility
+﻿DriftIndependentVolatility
 ======================================================================================
 
 .. currentmodule:: qf_lib.common.utils.volatility.drift_independent_volatility

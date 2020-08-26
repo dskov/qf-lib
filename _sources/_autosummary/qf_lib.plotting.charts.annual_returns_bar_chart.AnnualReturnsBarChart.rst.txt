@@ -1,4 +1,4 @@
-AnnualReturnsBarChart
+﻿AnnualReturnsBarChart
 =====================================================================
 
 .. currentmodule:: qf_lib.plotting.charts.annual_returns_bar_chart

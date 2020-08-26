@@ -1,4 +1,4 @@
-LiveTradingSheet
+﻿LiveTradingSheet
 =======================================================================
 
 .. currentmodule:: qf_lib.analysis.strategy_monitoring.live_trading_sheet

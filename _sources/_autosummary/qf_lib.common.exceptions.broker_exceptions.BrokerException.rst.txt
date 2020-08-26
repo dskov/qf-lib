@@ -1,4 +1,4 @@
-BrokerException
+﻿BrokerException
 ==========================================================
 
 .. currentmodule:: qf_lib.common.exceptions.broker_exceptions

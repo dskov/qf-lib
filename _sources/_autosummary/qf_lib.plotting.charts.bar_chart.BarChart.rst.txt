@@ -1,4 +1,4 @@
-BarChart
+﻿BarChart
 =========================================
 
 .. currentmodule:: qf_lib.plotting.charts.bar_chart

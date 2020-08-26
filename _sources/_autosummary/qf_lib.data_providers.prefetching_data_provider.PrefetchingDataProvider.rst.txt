@@ -1,4 +1,4 @@
-PrefetchingDataProvider
+﻿PrefetchingDataProvider
 =======================================================================
 
 .. currentmodule:: qf_lib.data_providers.prefetching_data_provider

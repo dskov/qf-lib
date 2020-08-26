@@ -1,4 +1,4 @@
-is_finite_number
+﻿is_finite_number
 =================================================================
 
 .. currentmodule:: qf_lib.common.utils.numberutils.is_finite_number

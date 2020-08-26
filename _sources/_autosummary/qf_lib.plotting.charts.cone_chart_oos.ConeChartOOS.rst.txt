@@ -1,4 +1,4 @@
-ConeChartOOS
+﻿ConeChartOOS
 ==================================================
 
 .. currentmodule:: qf_lib.plotting.charts.cone_chart_oos

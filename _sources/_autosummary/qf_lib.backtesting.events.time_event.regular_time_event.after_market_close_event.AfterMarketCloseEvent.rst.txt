@@ -1,4 +1,4 @@
-AfterMarketCloseEvent
+﻿AfterMarketCloseEvent
 ======================================================================================================
 
 .. currentmodule:: qf_lib.backtesting.events.time_event.regular_time_event.after_market_close_event

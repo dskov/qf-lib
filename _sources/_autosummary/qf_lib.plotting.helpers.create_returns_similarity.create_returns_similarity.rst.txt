@@ -1,4 +1,4 @@
-create_returns_similarity
+﻿create_returns_similarity
 ===========================================================================
 
 .. currentmodule:: qf_lib.plotting.helpers.create_returns_similarity

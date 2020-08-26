@@ -1,4 +1,4 @@
-create_gross_leverage_chart
+﻿create_gross_leverage_chart
 ===============================================================================
 
 .. currentmodule:: qf_lib.plotting.helpers.create_gross_leverage_chart

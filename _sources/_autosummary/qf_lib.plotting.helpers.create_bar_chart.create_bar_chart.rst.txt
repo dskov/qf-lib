@@ -1,4 +1,4 @@
-create_bar_chart
+﻿create_bar_chart
 =========================================================
 
 .. currentmodule:: qf_lib.plotting.helpers.create_bar_chart

@@ -1,4 +1,4 @@
-AxesPositionDecorator
+﻿AxesPositionDecorator
 ========================================================================
 
 .. currentmodule:: qf_lib.plotting.decorators.axes_position_decorator

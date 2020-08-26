@@ -1,4 +1,4 @@
-ExcelImporter
+﻿ExcelImporter
 =========================================================
 
 .. currentmodule:: qf_lib.documents_utils.excel.excel_importer

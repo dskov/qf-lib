@@ -1,4 +1,4 @@
-VerticalLineDecorator
+﻿VerticalLineDecorator
 ================================================================
 
 .. currentmodule:: qf_lib.plotting.decorators.line_decorators

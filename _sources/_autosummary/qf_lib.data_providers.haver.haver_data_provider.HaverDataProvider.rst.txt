@@ -1,4 +1,4 @@
-HaverDataProvider
+﻿HaverDataProvider
 =================================================================
 
 .. currentmodule:: qf_lib.data_providers.haver.haver_data_provider

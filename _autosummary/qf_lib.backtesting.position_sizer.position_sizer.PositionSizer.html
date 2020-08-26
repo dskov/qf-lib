@@ -185,14 +185,14 @@
 <em class="property">class </em><code class="sig-prename descclassname">qf_lib.backtesting.position_sizer.position_sizer.</code><code class="sig-name descname">PositionSizer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">broker</span><span class="p">:</span> <span class="n">qf_lib.backtesting.broker.broker.Broker</span></em>, <em class="sig-param"><span class="n">data_handler</span><span class="p">:</span> <span class="n"><a class="reference internal" href="qf_lib.backtesting.data_handler.data_handler.DataHandler.html#qf_lib.backtesting.data_handler.data_handler.DataHandler" title="qf_lib.backtesting.data_handler.data_handler.DataHandler">qf_lib.backtesting.data_handler.data_handler.DataHandler</a></span></em>, <em class="sig-param"><span class="n">order_factory</span><span class="p">:</span> <span class="n"><a class="reference internal" href="qf_lib.backtesting.order.order_factory.OrderFactory.html#qf_lib.backtesting.order.order_factory.OrderFactory" title="qf_lib.backtesting.order.order_factory.OrderFactory">qf_lib.backtesting.order.order_factory.OrderFactory</a></span></em>, <em class="sig-param"><span class="n">contract_ticker_mapper</span><span class="p">:</span> <span class="n"><a class="reference internal" href="qf_lib.backtesting.contract.contract_to_ticker_conversion.base.ContractTickerMapper.html#qf_lib.backtesting.contract.contract_to_ticker_conversion.base.ContractTickerMapper" title="qf_lib.backtesting.contract.contract_to_ticker_conversion.base.ContractTickerMapper">qf_lib.backtesting.contract.contract_to_ticker_conversion.base.ContractTickerMapper</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qf_lib/backtesting/position_sizer/position_sizer.html#PositionSizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qf_lib.backtesting.position_sizer.position_sizer.PositionSizer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>The PositionSizer abstract class converts signals to orders with size specified</p>
-<p><strong>Methods</strong></p>
+<p><strong>Methods:</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.backtesting.position_sizer.position_sizer.PositionSizer.size_signals" title="qf_lib.backtesting.position_sizer.position_sizer.PositionSizer.size_signals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">size_signals</span></code></a>(signals, use_stop_losses)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.backtesting.position_sizer.position_sizer.PositionSizer.size_signals" title="qf_lib.backtesting.position_sizer.position_sizer.PositionSizer.size_signals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">size_signals</span></code></a>(signals[, use_stop_losses])</p></td>
 <td><p>Based on the signals provided, creates a list of Orders where proper sizing has been applied</p></td>
 </tr>
 </tbody>

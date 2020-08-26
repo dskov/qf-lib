@@ -1,4 +1,4 @@
-LogReturnsDataFrame
+﻿LogReturnsDataFrame
 =====================================================================
 
 .. currentmodule:: qf_lib.containers.dataframe.log_returns_dataframe

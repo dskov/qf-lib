@@ -1,4 +1,4 @@
-EfficientFrontierPortfolio
+﻿EfficientFrontierPortfolio
 ======================================================================================================
 
 .. currentmodule:: qf_lib.portfolio_construction.portfolio_models.efficient_frontier_portfolio

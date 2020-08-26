@@ -98,6 +98,8 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">BacktestMonitor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="qf_lib.backtesting.monitoring.backtest_result.BacktestResult.html">BacktestResult</a></li>
 <li class="toctree-l3"><a class="reference internal" href="qf_lib.backtesting.monitoring.light_backtest_monitor.LightBacktestMonitor.html">LightBacktestMonitor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qf_lib.backtesting.monitoring.live_trading_monitor.LiveTradingMonitor.html">LiveTradingMonitor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qf_lib.backtesting.monitoring.past_signals_generator.PastSignalsGenerator.html">PastSignalsGenerator</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../backtesting.html#order">order</a></li>
@@ -187,20 +189,20 @@
 <p>This Monitor will be used to monitor backtest run from the script.
 It will display the portfolio value as the backtest progresses and generate a PDF at the end.
 It is not suitable for the Web application</p>
-<p><strong>Methods</strong></p>
+<p><strong>Methods:</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.backtesting.monitoring.backtest_monitor.BacktestMonitor.end_of_day_update" title="qf_lib.backtesting.monitoring.backtest_monitor.BacktestMonitor.end_of_day_update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">end_of_day_update</span></code></a>(timestamp)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.backtesting.monitoring.backtest_monitor.BacktestMonitor.end_of_day_update" title="qf_lib.backtesting.monitoring.backtest_monitor.BacktestMonitor.end_of_day_update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">end_of_day_update</span></code></a>([timestamp])</p></td>
 <td><p>Update line chart with current timeseries</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qf_lib.backtesting.monitoring.backtest_monitor.BacktestMonitor.end_of_trading_update" title="qf_lib.backtesting.monitoring.backtest_monitor.BacktestMonitor.end_of_trading_update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">end_of_trading_update</span></code></a>(_)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qf_lib.backtesting.monitoring.backtest_monitor.BacktestMonitor.end_of_trading_update" title="qf_lib.backtesting.monitoring.backtest_monitor.BacktestMonitor.end_of_trading_update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">end_of_trading_update</span></code></a>([_])</p></td>
 <td><p>Saves the results of the backtest</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.backtesting.monitoring.backtest_monitor.BacktestMonitor.real_time_update" title="qf_lib.backtesting.monitoring.backtest_monitor.BacktestMonitor.real_time_update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">real_time_update</span></code></a>(timestamp)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.backtesting.monitoring.backtest_monitor.BacktestMonitor.real_time_update" title="qf_lib.backtesting.monitoring.backtest_monitor.BacktestMonitor.real_time_update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">real_time_update</span></code></a>([timestamp])</p></td>
 <td><p>This method will not be used by the historical backtest</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#qf_lib.backtesting.monitoring.backtest_monitor.BacktestMonitor.record_transaction" title="qf_lib.backtesting.monitoring.backtest_monitor.BacktestMonitor.record_transaction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">record_transaction</span></code></a>(transaction)</p></td>

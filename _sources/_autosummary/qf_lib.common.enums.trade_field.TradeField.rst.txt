@@ -1,4 +1,4 @@
-TradeField
+﻿TradeField
 ==========================================
 
 .. currentmodule:: qf_lib.common.enums.trade_field

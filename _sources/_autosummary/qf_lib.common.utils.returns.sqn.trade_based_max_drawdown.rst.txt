@@ -1,4 +1,4 @@
-trade_based_max_drawdown
+﻿trade_based_max_drawdown
 ========================================================
 
 .. currentmodule:: qf_lib.common.utils.returns.sqn

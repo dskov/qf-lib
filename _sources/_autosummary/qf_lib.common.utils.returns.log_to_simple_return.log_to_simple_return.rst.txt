@@ -1,4 +1,4 @@
-log_to_simple_return
+﻿log_to_simple_return
 =====================================================================
 
 .. currentmodule:: qf_lib.common.utils.returns.log_to_simple_return

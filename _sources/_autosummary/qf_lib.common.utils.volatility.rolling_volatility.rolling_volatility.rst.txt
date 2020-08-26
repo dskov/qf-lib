@@ -1,4 +1,4 @@
-rolling_volatility
+﻿rolling_volatility
 ====================================================================
 
 .. currentmodule:: qf_lib.common.utils.volatility.rolling_volatility

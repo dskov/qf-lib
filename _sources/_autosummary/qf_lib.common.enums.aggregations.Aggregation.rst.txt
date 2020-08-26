@@ -1,4 +1,4 @@
-Aggregation
+﻿Aggregation
 ============================================
 
 .. currentmodule:: qf_lib.common.enums.aggregations

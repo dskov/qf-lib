@@ -1,4 +1,4 @@
-TimeInForce
+﻿TimeInForce
 ==================================================
 
 .. currentmodule:: qf_lib.backtesting.order.time_in_force

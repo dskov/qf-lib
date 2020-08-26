@@ -1,4 +1,4 @@
-ConeDecorator
+﻿ConeDecorator
 =======================================================
 
 .. currentmodule:: qf_lib.plotting.decorators.cone_decorator

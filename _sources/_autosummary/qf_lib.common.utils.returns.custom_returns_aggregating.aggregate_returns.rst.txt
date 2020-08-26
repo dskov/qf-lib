@@ -1,4 +1,4 @@
-aggregate_returns
+﻿aggregate_returns
 ========================================================================
 
 .. currentmodule:: qf_lib.common.utils.returns.custom_returns_aggregating

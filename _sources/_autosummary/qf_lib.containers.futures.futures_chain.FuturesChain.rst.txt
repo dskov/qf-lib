@@ -1,4 +1,4 @@
-FuturesChain
+﻿FuturesChain
 ====================================================
 
 .. currentmodule:: qf_lib.containers.futures.futures_chain

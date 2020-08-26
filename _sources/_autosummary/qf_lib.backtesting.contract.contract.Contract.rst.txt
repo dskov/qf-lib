@@ -1,4 +1,4 @@
-Contract
+﻿Contract
 =============================================
 
 .. currentmodule:: qf_lib.backtesting.contract.contract

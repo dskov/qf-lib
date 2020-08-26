@@ -1,4 +1,4 @@
-Order
+﻿Order
 ====================================
 
 .. currentmodule:: qf_lib.backtesting.order.order

@@ -1,4 +1,4 @@
-create_rolling_chart_using_benchmark
+﻿create_rolling_chart_using_benchmark
 =================================================================================================
 
 .. currentmodule:: qf_lib.plotting.helpers.create_rolling_chart_using_benchmark

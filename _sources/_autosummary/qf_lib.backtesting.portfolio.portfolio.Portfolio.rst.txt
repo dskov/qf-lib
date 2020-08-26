@@ -1,4 +1,4 @@
-Portfolio
+﻿Portfolio
 ================================================
 
 .. currentmodule:: qf_lib.backtesting.portfolio.portfolio

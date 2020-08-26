@@ -192,7 +192,7 @@
 </ul>
 </dd>
 </dl>
-<p><strong>Attributes</strong></p>
+<p><strong>Attributes:</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -210,7 +210,7 @@
 </tr>
 </tbody>
 </table>
-<p><strong>Methods</strong></p>
+<p><strong>Methods:</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -221,16 +221,16 @@
 <td><p>Adds a new view that will be taken into account in calculating the posterior</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#qf_lib.portfolio_construction.black_litterman.black_litterman.BlackLitterman.add_relative_view" title="qf_lib.portfolio_construction.black_litterman.black_litterman.BlackLitterman.add_relative_view"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_relative_view</span></code></a>(outperforming_asset_index, …)</p></td>
-<td><p>Adds a new view that will be taken into account in calculating the posterior</p></td>
+<td><p>Adds a new view that will be taken into account in calculating the posterior The investor believs that outperforming_asset will outperform the underperforming_asset by outperformance with the volatility of the view of  view_vol</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.portfolio_construction.black_litterman.black_litterman.BlackLitterman.calculate_lambda" title="qf_lib.portfolio_construction.black_litterman.black_litterman.BlackLitterman.calculate_lambda"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_lambda</span></code></a>()</p></td>
-<td><p>Calculates lambda corresponding to risk aversion in the formula:</p></td>
+<td><p>Calculates lambda corresponding to risk aversion in the formula: max(w):  w’R - lambda/2 * w’ * Cov * w:</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#qf_lib.portfolio_construction.black_litterman.black_litterman.BlackLitterman.calculate_posterior" title="qf_lib.portfolio_construction.black_litterman.black_litterman.BlackLitterman.calculate_posterior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_posterior</span></code></a>()</p></td>
 <td><p>Calculate shape of posterior distribution including the views.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.portfolio_construction.black_litterman.black_litterman.BlackLitterman.calculate_prior" title="qf_lib.portfolio_construction.black_litterman.black_litterman.BlackLitterman.calculate_prior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_prior</span></code></a>()</p></td>
-<td><p>Function calculates the prior for the BL model:</p></td>
+<td><p>Function calculates the prior for the BL model: - prior_mean = lambda * hist_cov * market_cap_weights - prior_cov = tau * hist_cov</p></td>
 </tr>
 </tbody>
 </table>

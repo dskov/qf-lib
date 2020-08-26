@@ -1,4 +1,4 @@
-FuturesAdjustmentMethod
+﻿FuturesAdjustmentMethod
 ===========================================================================
 
 .. currentmodule:: qf_lib.containers.futures.futures_adjustment_method

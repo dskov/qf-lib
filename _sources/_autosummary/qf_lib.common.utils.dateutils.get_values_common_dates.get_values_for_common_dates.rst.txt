@@ -1,4 +1,4 @@
-get_values_for_common_dates
+﻿get_values_for_common_dates
 =================================================================================
 
 .. currentmodule:: qf_lib.common.utils.dateutils.get_values_common_dates

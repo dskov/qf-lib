@@ -1,4 +1,4 @@
-StemDecorator
+﻿StemDecorator
 =======================================================
 
 .. currentmodule:: qf_lib.plotting.decorators.stem_decorator

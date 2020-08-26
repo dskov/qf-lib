@@ -1,4 +1,4 @@
-kelly_binary
+﻿kelly_binary
 ====================================================
 
 .. currentmodule:: qf_lib.common.utils.miscellaneous.kelly

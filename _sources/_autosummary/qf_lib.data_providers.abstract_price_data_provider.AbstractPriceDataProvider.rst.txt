@@ -1,4 +1,4 @@
-AbstractPriceDataProvider
+﻿AbstractPriceDataProvider
 ============================================================================
 
 .. currentmodule:: qf_lib.data_providers.abstract_price_data_provider

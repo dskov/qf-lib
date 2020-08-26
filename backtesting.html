@@ -91,6 +91,8 @@
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/qf_lib.backtesting.alpha_model.alpha_model.AlphaModelSettings.html">AlphaModelSettings</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/qf_lib.backtesting.alpha_model.alpha_model.AlphaModel.html">AlphaModel</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/qf_lib.backtesting.alpha_model.alpha_model_factory.AlphaModelFactory.html">AlphaModelFactory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/qf_lib.backtesting.alpha_model.alpha_model_strategy.AlphaModelStrategy.html">AlphaModelStrategy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/qf_lib.backtesting.alpha_model.futures_alpha_model_strategy.FuturesAlphaModelStrategy.html">FuturesAlphaModelStrategy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/qf_lib.backtesting.alpha_model.signal.Signal.html">Signal</a></li>
 </ul>
 </li>
@@ -131,6 +133,7 @@
 <li class="toctree-l4"><a class="reference internal" href="_autosummary/qf_lib.backtesting.execution_handler.slippage.base.Slippage.html">Slippage</a></li>
 <li class="toctree-l4"><a class="reference internal" href="_autosummary/qf_lib.backtesting.execution_handler.slippage.fixed_slippage.FixedSlippage.html">FixedSlippage</a></li>
 <li class="toctree-l4"><a class="reference internal" href="_autosummary/qf_lib.backtesting.execution_handler.slippage.price_based_slippage.PriceBasedSlippage.html">PriceBasedSlippage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/qf_lib.backtesting.execution_handler.slippage.square_root_market_impact_slippage.SquareRootMarketImpactSlippage.html">SquareRootMarketImpactSlippage</a></li>
 </ul>
 </li>
 </ul>
@@ -148,6 +151,8 @@
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/qf_lib.backtesting.monitoring.backtest_monitor.BacktestMonitor.html">BacktestMonitor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/qf_lib.backtesting.monitoring.backtest_result.BacktestResult.html">BacktestResult</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/qf_lib.backtesting.monitoring.light_backtest_monitor.LightBacktestMonitor.html">LightBacktestMonitor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/qf_lib.backtesting.monitoring.live_trading_monitor.LiveTradingMonitor.html">LiveTradingMonitor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/qf_lib.backtesting.monitoring.past_signals_generator.PastSignalsGenerator.html">PastSignalsGenerator</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#order">order</a><ul>
@@ -170,7 +175,13 @@
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/qf_lib.backtesting.position_sizer.fixed_portfolio_percentage_position_sizer.FixedPortfolioPercentagePositionSizer.html">FixedPortfolioPercentagePositionSizer</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#trading-session">trading_session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#trading-session">trading_session</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/qf_lib.backtesting.trading_session.trading_session.TradingSession.html">TradingSession</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/qf_lib.backtesting.trading_session.backtest_trading_session.BacktestTradingSession.html">BacktestTradingSession</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/qf_lib.backtesting.trading_session.backtest_trading_session_builder.BacktestTradingSessionBuilder.html">BacktestTradingSessionBuilder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/qf_lib.backtesting.trading_session.live_trading_session.LiveTradingSession.html">LiveTradingSession</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="common.html">common</a></li>
@@ -261,6 +272,12 @@
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/qf_lib.backtesting.alpha_model.alpha_model_factory.AlphaModelFactory.html#qf_lib.backtesting.alpha_model.alpha_model_factory.AlphaModelFactory" title="qf_lib.backtesting.alpha_model.alpha_model_factory.AlphaModelFactory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">alpha_model_factory.AlphaModelFactory</span></code></a></p></td>
 <td><p>Factory used for AlphaModels generation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/qf_lib.backtesting.alpha_model.alpha_model_strategy.AlphaModelStrategy.html#qf_lib.backtesting.alpha_model.alpha_model_strategy.AlphaModelStrategy" title="qf_lib.backtesting.alpha_model.alpha_model_strategy.AlphaModelStrategy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">alpha_model_strategy.AlphaModelStrategy</span></code></a></p></td>
+<td><p>Puts together models and all settings around it and generates orders on before market open.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/qf_lib.backtesting.alpha_model.futures_alpha_model_strategy.FuturesAlphaModelStrategy.html#qf_lib.backtesting.alpha_model.futures_alpha_model_strategy.FuturesAlphaModelStrategy" title="qf_lib.backtesting.alpha_model.futures_alpha_model_strategy.FuturesAlphaModelStrategy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">futures_alpha_model_strategy.FuturesAlphaModelStrategy</span></code></a></p></td>
+<td><p>An alpha model strategy which is capable of handling futures contracts.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="_autosummary/qf_lib.backtesting.alpha_model.signal.Signal.html#qf_lib.backtesting.alpha_model.signal.Signal" title="qf_lib.backtesting.alpha_model.signal.Signal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">signal.Signal</span></code></a></p></td>
 <td><p>Objects of this class are used in the portfolio construction process.</p></td>
@@ -391,6 +408,9 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/qf_lib.backtesting.execution_handler.slippage.price_based_slippage.PriceBasedSlippage.html#qf_lib.backtesting.execution_handler.slippage.price_based_slippage.PriceBasedSlippage" title="qf_lib.backtesting.execution_handler.slippage.price_based_slippage.PriceBasedSlippage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">price_based_slippage.PriceBasedSlippage</span></code></a></p></td>
 <td><p>Calculates the slippage by using some fixed fraction of the current securities’ price (e.g.</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/qf_lib.backtesting.execution_handler.slippage.square_root_market_impact_slippage.SquareRootMarketImpactSlippage.html#qf_lib.backtesting.execution_handler.slippage.square_root_market_impact_slippage.SquareRootMarketImpactSlippage" title="qf_lib.backtesting.execution_handler.slippage.square_root_market_impact_slippage.SquareRootMarketImpactSlippage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">square_root_market_impact_slippage.SquareRootMarketImpactSlippage</span></code></a></p></td>
+<td><p>Slippage based on the square-root formula for market impact modelling.</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -440,6 +460,12 @@
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="_autosummary/qf_lib.backtesting.monitoring.light_backtest_monitor.LightBacktestMonitor.html#qf_lib.backtesting.monitoring.light_backtest_monitor.LightBacktestMonitor" title="qf_lib.backtesting.monitoring.light_backtest_monitor.LightBacktestMonitor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">light_backtest_monitor.LightBacktestMonitor</span></code></a></p></td>
 <td><p>This Monitor will be used to monitor backtest run from the script.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/qf_lib.backtesting.monitoring.live_trading_monitor.LiveTradingMonitor.html#qf_lib.backtesting.monitoring.live_trading_monitor.LiveTradingMonitor" title="qf_lib.backtesting.monitoring.live_trading_monitor.LiveTradingMonitor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">live_trading_monitor.LiveTradingMonitor</span></code></a></p></td>
+<td><p>This Monitor will be used to monitor live trading activities</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/qf_lib.backtesting.monitoring.past_signals_generator.PastSignalsGenerator.html#qf_lib.backtesting.monitoring.past_signals_generator.PastSignalsGenerator" title="qf_lib.backtesting.monitoring.past_signals_generator.PastSignalsGenerator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">past_signals_generator.PastSignalsGenerator</span></code></a></p></td>
+<td><p>Class which generated all the previous signals.</p></td>
 </tr>
 </tbody>
 </table>
@@ -518,6 +544,18 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/qf_lib.backtesting.trading_session.trading_session.TradingSession.html#qf_lib.backtesting.trading_session.trading_session.TradingSession" title="qf_lib.backtesting.trading_session.trading_session.TradingSession"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trading_session.TradingSession</span></code></a></p></td>
+<td><p>Base class for all Trading Sessions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/qf_lib.backtesting.trading_session.backtest_trading_session.BacktestTradingSession.html#qf_lib.backtesting.trading_session.backtest_trading_session.BacktestTradingSession" title="qf_lib.backtesting.trading_session.backtest_trading_session.BacktestTradingSession"><code class="xref py py-obj docutils literal notranslate"><span class="pre">backtest_trading_session.BacktestTradingSession</span></code></a></p></td>
+<td><p>Encapsulates the settings and components for carrying out a backtest session.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/qf_lib.backtesting.trading_session.backtest_trading_session_builder.BacktestTradingSessionBuilder.html#qf_lib.backtesting.trading_session.backtest_trading_session_builder.BacktestTradingSessionBuilder" title="qf_lib.backtesting.trading_session.backtest_trading_session_builder.BacktestTradingSessionBuilder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">backtest_trading_session_builder.BacktestTradingSessionBuilder</span></code></a></p></td>
+<td><p>Class used to build a Trading Session with all necessary elements, connections and dependencies.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/qf_lib.backtesting.trading_session.live_trading_session.LiveTradingSession.html#qf_lib.backtesting.trading_session.live_trading_session.LiveTradingSession" title="qf_lib.backtesting.trading_session.live_trading_session.LiveTradingSession"><code class="xref py py-obj docutils literal notranslate"><span class="pre">live_trading_session.LiveTradingSession</span></code></a></p></td>
+<td><p>Encapsulates the settings and components for Live Trading</p></td>
+</tr>
 </tbody>
 </table>
 </div>

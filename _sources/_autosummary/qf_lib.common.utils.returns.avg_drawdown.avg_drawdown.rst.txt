@@ -1,4 +1,4 @@
-avg_drawdown
+﻿avg_drawdown
 =====================================================
 
 .. currentmodule:: qf_lib.common.utils.returns.avg_drawdown

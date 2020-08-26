@@ -1,4 +1,4 @@
-SimpleReturnsSeries
+﻿SimpleReturnsSeries
 ==================================================================
 
 .. currentmodule:: qf_lib.containers.series.simple_returns_series

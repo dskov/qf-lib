@@ -1,4 +1,4 @@
-DistChart
+﻿DistChart
 ===========================================
 
 .. currentmodule:: qf_lib.plotting.charts.dist_chart

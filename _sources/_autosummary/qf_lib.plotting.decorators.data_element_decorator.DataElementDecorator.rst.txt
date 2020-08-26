@@ -1,4 +1,4 @@
-DataElementDecorator
+﻿DataElementDecorator
 ======================================================================
 
 .. currentmodule:: qf_lib.plotting.decorators.data_element_decorator

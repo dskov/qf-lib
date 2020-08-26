@@ -1,4 +1,4 @@
-PointEmphasisDecorator
+﻿PointEmphasisDecorator
 ==========================================================================
 
 .. currentmodule:: qf_lib.plotting.decorators.point_emphasis_decorator

@@ -1,4 +1,4 @@
-tail_events
+﻿tail_events
 ===================================================
 
 .. currentmodule:: qf_lib.common.utils.returns.tail_events

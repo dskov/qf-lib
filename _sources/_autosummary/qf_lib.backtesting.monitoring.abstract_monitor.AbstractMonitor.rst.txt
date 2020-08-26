@@ -1,4 +1,4 @@
-AbstractMonitor
+﻿AbstractMonitor
 ==============================================================
 
 .. currentmodule:: qf_lib.backtesting.monitoring.abstract_monitor

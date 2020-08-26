@@ -1,4 +1,4 @@
-OrderFactory
+﻿OrderFactory
 ===================================================
 
 .. currentmodule:: qf_lib.backtesting.order.order_factory

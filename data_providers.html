@@ -206,13 +206,49 @@
 </tr>
 </tbody>
 </table>
-<span class="target" id="module-qf_lib.data_providers.helpers"></span><p><strong>Functions</strong></p>
+<span class="target" id="module-qf_lib.data_providers.helpers"></span><p><strong>Classes:</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
 </colgroup>
 <tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Dict</span></code>(*args, **kwds)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">PricesDataFrame</span></code>([data, index, columns, …])</p></td>
+<td><p>DataFrame containing prices (for example prices of the SPY).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">PricesSeries</span></code>([data, index, dtype, name, …])</p></td>
+<td><p>Series of prices (for example prices of the SPY).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">QFDataArray</span></code>(data[, coords, dims, name, …])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">QFDataFrame</span></code>([data, index, columns, dtype, copy])</p></td>
+<td><p>Base class for all data frames (2-D matrix-like objects) used in the project.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">QFSeries</span></code>(data, index, dtype, name, copy, …)</p></td>
+<td><p>Base class for all time-indexed series used in the quant-fin project.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Ticker</span></code>(ticker)</p></td>
+<td><p>Representation of a security.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Functions:</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cast_dataframe</span></code>(dataframe, output_type)</p></td>
+<td><p>Casts the given dataframe to another dataframe type specified by output_type (e.g.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cast_series</span></code>(series, output_type)</p></td>
+<td><p>Casts the given series to another series type specified by output_type (e.g.</p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.data_providers.helpers.normalize_data_array" title="qf_lib.data_providers.helpers.normalize_data_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normalize_data_array</span></code></a>(data_array, tickers, …)</p></td>
 <td><p>Post-processes the result of some DataProviders so that it satisfies the format of a result expected from DataProviders.</p></td>
 </tr>

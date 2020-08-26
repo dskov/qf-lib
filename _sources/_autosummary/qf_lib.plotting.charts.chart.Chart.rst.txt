@@ -1,4 +1,4 @@
-Chart
+﻿Chart
 ==================================
 
 .. currentmodule:: qf_lib.plotting.charts.chart

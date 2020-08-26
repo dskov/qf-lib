@@ -1,4 +1,4 @@
-PriceField
+﻿PriceField
 ==========================================
 
 .. currentmodule:: qf_lib.common.enums.price_field

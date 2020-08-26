@@ -1,4 +1,4 @@
-NoValidTickerException
+﻿NoValidTickerException
 ===========================================================================
 
 .. currentmodule:: qf_lib.common.exceptions.future_contracts_exceptions

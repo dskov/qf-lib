@@ -201,7 +201,7 @@
 <dt id="qf_lib.common.utils.confidence_interval.analytical_cone.AnalyticalCone">
 <em class="property">class </em><code class="sig-prename descclassname">qf_lib.common.utils.confidence_interval.analytical_cone.</code><code class="sig-name descname">AnalyticalCone</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">series</span><span class="p">:</span> <span class="n"><a class="reference internal" href="qf_lib.containers.series.qf_series.QFSeries.html#qf_lib.containers.series.qf_series.QFSeries" title="qf_lib.containers.series.qf_series.QFSeries">qf_lib.containers.series.qf_series.QFSeries</a></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qf_lib/common/utils/confidence_interval/analytical_cone.html#AnalyticalCone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qf_lib.common.utils.confidence_interval.analytical_cone.AnalyticalCone" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="qf_lib.common.utils.confidence_interval.analytical_cone_base.AnalyticalConeBase.html#qf_lib.common.utils.confidence_interval.analytical_cone_base.AnalyticalConeBase" title="qf_lib.common.utils.confidence_interval.analytical_cone_base.AnalyticalConeBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">qf_lib.common.utils.confidence_interval.analytical_cone_base.AnalyticalConeBase</span></code></a></p>
-<p><strong>Methods</strong></p>
+<p><strong>Methods:</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -212,7 +212,7 @@
 <td><p>Evaluates many simple cones and saves the end values of every individual simple cone.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#qf_lib.common.utils.confidence_interval.analytical_cone.AnalyticalCone.calculate_simple_cone" title="qf_lib.common.utils.confidence_interval.analytical_cone.AnalyticalCone.calculate_simple_cone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_simple_cone</span></code></a>(live_start_date, …)</p></td>
-<td><p>Creates a simple cone starting from a given date using the solution to the stochastic equation:</p></td>
+<td><p>Creates a simple cone starting from a given date using the solution to the stochastic equation: S(t) = S(0)*exp( (mu-0.5*sigma^2)*t + sigma*N(0,1)*sqrt(t) )</p></td>
 </tr>
 </tbody>
 </table>

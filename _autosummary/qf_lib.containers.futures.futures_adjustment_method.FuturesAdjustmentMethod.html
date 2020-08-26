@@ -179,7 +179,7 @@
 <em class="property">class </em><code class="sig-prename descclassname">qf_lib.containers.futures.futures_adjustment_method.</code><code class="sig-name descname">FuturesAdjustmentMethod</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qf_lib/containers/futures/futures_adjustment_method.html#FuturesAdjustmentMethod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qf_lib.containers.futures.futures_adjustment_method.FuturesAdjustmentMethod" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
 <p>Method used to join the prices of different future contracts, belonging to one future chain.</p>
-<p><strong>Attributes</strong></p>
+<p><strong>Attributes:</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -187,7 +187,7 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.containers.futures.futures_adjustment_method.FuturesAdjustmentMethod.NTH_NEAREST" title="qf_lib.containers.futures.futures_adjustment_method.FuturesAdjustmentMethod.NTH_NEAREST"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NTH_NEAREST</span></code></a></p></td>
-<td><p>NTH_NEAREST - the price data for a certain period of time is taken from the N-th contract, there is no</p></td>
+<td><p>NTH_NEAREST - the price data for a certain period of time is taken from the N-th contract, there is no discontinuities correction at the contract expiry dates</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#qf_lib.containers.futures.futures_adjustment_method.FuturesAdjustmentMethod.BACK_ADJUSTED" title="qf_lib.containers.futures.futures_adjustment_method.FuturesAdjustmentMethod.BACK_ADJUSTED"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BACK_ADJUSTED</span></code></a></p></td>
 <td><p>BACK_ADJUST - the historical price discontinuities are corrected, so that they would align smoothly on the expiry date.</p></td>

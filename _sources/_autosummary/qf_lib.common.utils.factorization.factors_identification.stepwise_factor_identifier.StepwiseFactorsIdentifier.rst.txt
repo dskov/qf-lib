@@ -1,4 +1,4 @@
-StepwiseFactorsIdentifier
+﻿StepwiseFactorsIdentifier
 =============================================================================================================
 
 .. currentmodule:: qf_lib.common.utils.factorization.factors_identification.stepwise_factor_identifier

@@ -1,4 +1,4 @@
-InitialRiskPositionSizer
+﻿InitialRiskPositionSizer
 ======================================================================================
 
 .. currentmodule:: qf_lib.backtesting.position_sizer.initial_risk_position_sizer

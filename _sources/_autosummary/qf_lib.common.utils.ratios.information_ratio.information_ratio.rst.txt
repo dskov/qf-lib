@@ -1,4 +1,4 @@
-information_ratio
+﻿information_ratio
 ==============================================================
 
 .. currentmodule:: qf_lib.common.utils.ratios.information_ratio

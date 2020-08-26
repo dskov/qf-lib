@@ -1,4 +1,4 @@
-TimeseriesAnalysis
+﻿TimeseriesAnalysis
 ==========================================================================
 
 .. currentmodule:: qf_lib.analysis.timeseries_analysis.timeseries_analysis

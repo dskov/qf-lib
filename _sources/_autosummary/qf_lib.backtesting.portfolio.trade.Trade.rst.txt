@@ -1,4 +1,4 @@
-Trade
+﻿Trade
 ========================================
 
 .. currentmodule:: qf_lib.backtesting.portfolio.trade

@@ -1,4 +1,4 @@
-VolatilityManager
+﻿VolatilityManager
 ===================================================================
 
 .. currentmodule:: qf_lib.common.utils.volatility.volatility_manager

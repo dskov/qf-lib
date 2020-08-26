@@ -1,4 +1,4 @@
-FutureContract
+﻿FutureContract
 ========================================================
 
 .. currentmodule:: qf_lib.containers.futures.future_contract

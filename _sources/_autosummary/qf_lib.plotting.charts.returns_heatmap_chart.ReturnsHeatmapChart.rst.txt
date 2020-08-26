@@ -1,4 +1,4 @@
-ReturnsHeatmapChart
+﻿ReturnsHeatmapChart
 ================================================================
 
 .. currentmodule:: qf_lib.plotting.charts.returns_heatmap_chart

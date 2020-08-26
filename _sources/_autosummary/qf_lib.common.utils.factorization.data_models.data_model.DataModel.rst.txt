@@ -1,4 +1,4 @@
-DataModel
+﻿DataModel
 ==================================================================
 
 .. currentmodule:: qf_lib.common.utils.factorization.data_models.data_model

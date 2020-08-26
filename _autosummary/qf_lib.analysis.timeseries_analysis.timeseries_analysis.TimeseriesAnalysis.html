@@ -208,7 +208,15 @@ It contains the following fields:</p>
 <li><p>kurtosis</p></li>
 <li><p>kelly</p></li>
 </ul>
-<p><strong>Methods</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>returns_timeseries</strong> (<a class="reference internal" href="qf_lib.containers.series.qf_series.QFSeries.html#qf_lib.containers.series.qf_series.QFSeries" title="qf_lib.containers.series.qf_series.QFSeries"><em>QFSeries</em></a>) – Analysed timeseries. It should be PriceSeries, SimpleReturnSeries or LogReturnSeries</p></li>
+<li><p><strong>frequency</strong> (<a class="reference internal" href="qf_lib.common.enums.frequency.Frequency.html#qf_lib.common.enums.frequency.Frequency" title="qf_lib.common.enums.frequency.Frequency"><em>Frequency</em></a>) – Corresponds to the frequency od data samples in the seres.</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Methods:</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -230,22 +238,14 @@ It contains the following fields:</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.analysis.timeseries_analysis.timeseries_analysis.TimeseriesAnalysis.populate_table" title="qf_lib.analysis.timeseries_analysis.timeseries_analysis.TimeseriesAnalysis.populate_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">populate_table</span></code></a>(table[, name])</p></td>
 <td><p>Adds the data calculated in this analysis to the specified table.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qf_lib.analysis.timeseries_analysis.timeseries_analysis.TimeseriesAnalysis.table_for_df" title="qf_lib.analysis.timeseries_analysis.timeseries_analysis.TimeseriesAnalysis.table_for_df"><code class="xref py py-obj docutils literal notranslate"><span class="pre">table_for_df</span></code></a>(df, frequency)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qf_lib.analysis.timeseries_analysis.timeseries_analysis.TimeseriesAnalysis.table_for_df" title="qf_lib.analysis.timeseries_analysis.timeseries_analysis.TimeseriesAnalysis.table_for_df"><code class="xref py py-obj docutils literal notranslate"><span class="pre">table_for_df</span></code></a>(df[, frequency])</p></td>
 <td><p>Returns a table similar to the one below:</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.analysis.timeseries_analysis.timeseries_analysis.TimeseriesAnalysis.values_in_table" title="qf_lib.analysis.timeseries_analysis.timeseries_analysis.TimeseriesAnalysis.values_in_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">values_in_table</span></code></a>(ta_collection, …)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.analysis.timeseries_analysis.timeseries_analysis.TimeseriesAnalysis.values_in_table" title="qf_lib.analysis.timeseries_analysis.timeseries_analysis.TimeseriesAnalysis.values_in_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">values_in_table</span></code></a>(ta_collection[, asset_names])</p></td>
 <td><p>Returns a string with all the measures in a form of table of the following format:</p></td>
 </tr>
 </tbody>
 </table>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>returns_timeseries</strong> (<a class="reference internal" href="qf_lib.containers.series.qf_series.QFSeries.html#qf_lib.containers.series.qf_series.QFSeries" title="qf_lib.containers.series.qf_series.QFSeries"><em>QFSeries</em></a>) – Analysed timeseries. It should be PriceSeries, SimpleReturnSeries or LogReturnSeries</p></li>
-<li><p><strong>frequency</strong> (<a class="reference internal" href="qf_lib.common.enums.frequency.Frequency.html#qf_lib.common.enums.frequency.Frequency" title="qf_lib.common.enums.frequency.Frequency"><em>Frequency</em></a>) – Corresponds to the frequency od data samples in the seres.</p></li>
-</ul>
-</dd>
-</dl>
 <dl class="py method">
 <dt id="qf_lib.analysis.timeseries_analysis.timeseries_analysis.TimeseriesAnalysis.get_measures">
 <code class="sig-name descname">get_measures</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>str<span class="p">]</span><a class="reference internal" href="../_modules/qf_lib/analysis/timeseries_analysis/timeseries_analysis.html#TimeseriesAnalysis.get_measures"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qf_lib.analysis.timeseries_analysis.timeseries_analysis.TimeseriesAnalysis.get_measures" title="Permalink to this definition">¶</a></dt>
@@ -307,7 +307,7 @@ Asset3              66.26       29.19       20.74       14.86       15.54 …
 
 <dl class="py method">
 <dt id="qf_lib.analysis.timeseries_analysis.timeseries_analysis.TimeseriesAnalysis.values_in_table">
-<em class="property">static </em><code class="sig-name descname">values_in_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ta_collection</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>TimeseriesAnalysis<span class="p">, </span>Sequence<span class="p">[</span>TimeseriesAnalysis<span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">asset_names</span><span class="p">:</span> <span class="n">Union[None, str, Sequence[str]]</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/qf_lib/analysis/timeseries_analysis/timeseries_analysis.html#TimeseriesAnalysis.values_in_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qf_lib.analysis.timeseries_analysis.timeseries_analysis.TimeseriesAnalysis.values_in_table" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="sig-name descname">values_in_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ta_collection</span><span class="p">:</span> <span class="n">Union<span class="p">[</span><a class="reference internal" href="#qf_lib.analysis.timeseries_analysis.timeseries_analysis.TimeseriesAnalysis" title="qf_lib.analysis.timeseries_analysis.timeseries_analysis.TimeseriesAnalysis">TimeseriesAnalysis</a><span class="p">, </span>Sequence<span class="p">[</span><a class="reference internal" href="#qf_lib.analysis.timeseries_analysis.timeseries_analysis.TimeseriesAnalysis" title="qf_lib.analysis.timeseries_analysis.timeseries_analysis.TimeseriesAnalysis">TimeseriesAnalysis</a><span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">asset_names</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>None<span class="p">, </span>str<span class="p">, </span>Sequence<span class="p">[</span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/qf_lib/analysis/timeseries_analysis/timeseries_analysis.html#TimeseriesAnalysis.values_in_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qf_lib.analysis.timeseries_analysis.timeseries_analysis.TimeseriesAnalysis.values_in_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a string with all the measures in a form of table of the following format:</p>
 <blockquote>
 <div><p>Asset1    Asset2  …</p>

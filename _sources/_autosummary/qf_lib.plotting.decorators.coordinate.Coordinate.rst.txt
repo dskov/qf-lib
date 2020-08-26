@@ -1,4 +1,4 @@
-Coordinate
+﻿Coordinate
 ================================================
 
 .. currentmodule:: qf_lib.plotting.decorators.coordinate

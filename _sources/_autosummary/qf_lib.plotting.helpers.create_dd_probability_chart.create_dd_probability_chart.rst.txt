@@ -1,4 +1,4 @@
-create_dd_probability_chart
+﻿create_dd_probability_chart
 ===============================================================================
 
 .. currentmodule:: qf_lib.plotting.helpers.create_dd_probability_chart

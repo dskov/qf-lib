@@ -1,4 +1,4 @@
-ElasticNetFactorsIdentifier
+﻿ElasticNetFactorsIdentifier
 ===================================================================================================================
 
 .. currentmodule:: qf_lib.common.utils.factorization.factors_identification.elastic_net_factors_identifier

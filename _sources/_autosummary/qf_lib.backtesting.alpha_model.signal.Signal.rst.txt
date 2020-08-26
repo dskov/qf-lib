@@ -1,4 +1,4 @@
-Signal
+﻿Signal
 ============================================
 
 .. currentmodule:: qf_lib.backtesting.alpha_model.signal

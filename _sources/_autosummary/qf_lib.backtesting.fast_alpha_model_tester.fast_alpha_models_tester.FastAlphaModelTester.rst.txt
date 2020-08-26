@@ -1,4 +1,4 @@
-FastAlphaModelTester
+﻿FastAlphaModelTester
 ========================================================================================
 
 .. currentmodule:: qf_lib.backtesting.fast_alpha_model_tester.fast_alpha_models_tester

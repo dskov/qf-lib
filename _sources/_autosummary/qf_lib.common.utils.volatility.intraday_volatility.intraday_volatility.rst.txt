@@ -1,4 +1,4 @@
-intraday_volatility
+﻿intraday_volatility
 ======================================================================
 
 .. currentmodule:: qf_lib.common.utils.volatility.intraday_volatility

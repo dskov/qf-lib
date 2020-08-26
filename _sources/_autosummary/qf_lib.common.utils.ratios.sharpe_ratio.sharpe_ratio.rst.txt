@@ -1,4 +1,4 @@
-sharpe_ratio
+﻿sharpe_ratio
 ====================================================
 
 .. currentmodule:: qf_lib.common.utils.ratios.sharpe_ratio

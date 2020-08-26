@@ -1,4 +1,4 @@
-get_quarter
+﻿get_quarter
 =====================================================
 
 .. currentmodule:: qf_lib.common.utils.dateutils.get_quarter

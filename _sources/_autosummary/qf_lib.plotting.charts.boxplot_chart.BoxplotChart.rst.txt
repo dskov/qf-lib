@@ -1,4 +1,4 @@
-BoxplotChart
+﻿BoxplotChart
 =================================================
 
 .. currentmodule:: qf_lib.plotting.charts.boxplot_chart

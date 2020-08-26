@@ -1,4 +1,4 @@
-trade_based_cagr
+﻿trade_based_cagr
 ================================================
 
 .. currentmodule:: qf_lib.common.utils.returns.sqn

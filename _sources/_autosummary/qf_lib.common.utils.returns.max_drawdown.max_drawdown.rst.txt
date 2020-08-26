@@ -1,4 +1,4 @@
-max_drawdown
+﻿max_drawdown
 =====================================================
 
 .. currentmodule:: qf_lib.common.utils.returns.max_drawdown

@@ -98,6 +98,8 @@
 <li class="toctree-l3"><a class="reference internal" href="qf_lib.backtesting.monitoring.backtest_monitor.BacktestMonitor.html">BacktestMonitor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="qf_lib.backtesting.monitoring.backtest_result.BacktestResult.html">BacktestResult</a></li>
 <li class="toctree-l3"><a class="reference internal" href="qf_lib.backtesting.monitoring.light_backtest_monitor.LightBacktestMonitor.html">LightBacktestMonitor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qf_lib.backtesting.monitoring.live_trading_monitor.LiveTradingMonitor.html">LiveTradingMonitor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qf_lib.backtesting.monitoring.past_signals_generator.PastSignalsGenerator.html">PastSignalsGenerator</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../backtesting.html#order">order</a></li>
@@ -187,7 +189,7 @@
 <p>AbstractMonitor is a class providing an interface for
 all inherited Monitor classes (live, historic, custom, etc).
 Monitor should be subclassed according to the use.</p>
-<p><strong>Methods</strong></p>
+<p><strong>Methods:</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -197,7 +199,7 @@ Monitor should be subclassed according to the use.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.backtesting.monitoring.abstract_monitor.AbstractMonitor.end_of_day_update" title="qf_lib.backtesting.monitoring.abstract_monitor.AbstractMonitor.end_of_day_update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">end_of_day_update</span></code></a>(timestamp)</p></td>
 <td><p>Update the statistics after a whole day of trading.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qf_lib.backtesting.monitoring.abstract_monitor.AbstractMonitor.end_of_trading_update" title="qf_lib.backtesting.monitoring.abstract_monitor.AbstractMonitor.end_of_trading_update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">end_of_trading_update</span></code></a>(timestamp)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qf_lib.backtesting.monitoring.abstract_monitor.AbstractMonitor.end_of_trading_update" title="qf_lib.backtesting.monitoring.abstract_monitor.AbstractMonitor.end_of_trading_update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">end_of_trading_update</span></code></a>([timestamp])</p></td>
 <td><p>Final update at the end of backtest session</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.backtesting.monitoring.abstract_monitor.AbstractMonitor.real_time_update" title="qf_lib.backtesting.monitoring.abstract_monitor.AbstractMonitor.real_time_update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">real_time_update</span></code></a>(timestamp)</p></td>

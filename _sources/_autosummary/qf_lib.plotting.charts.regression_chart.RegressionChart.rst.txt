@@ -1,4 +1,4 @@
-RegressionChart
+﻿RegressionChart
 =======================================================
 
 .. currentmodule:: qf_lib.plotting.charts.regression_chart

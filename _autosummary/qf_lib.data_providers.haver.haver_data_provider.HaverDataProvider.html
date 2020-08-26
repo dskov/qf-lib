@@ -182,23 +182,23 @@
 <dd class="field-odd"><p><strong>settings</strong> – Settings object, which should contain path to the directory with the Haver database</p>
 </dd>
 </dl>
-<p><strong>Methods</strong></p>
+<p><strong>Methods:</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.data_providers.haver.haver_data_provider.HaverDataProvider.expiration_date_field_str_map" title="qf_lib.data_providers.haver.haver_data_provider.HaverDataProvider.expiration_date_field_str_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expiration_date_field_str_map</span></code></a>(ticker)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.data_providers.haver.haver_data_provider.HaverDataProvider.expiration_date_field_str_map" title="qf_lib.data_providers.haver.haver_data_provider.HaverDataProvider.expiration_date_field_str_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expiration_date_field_str_map</span></code></a>([ticker])</p></td>
 <td><p>Method has to be implemented in each data provider in order to be able to use get_futures_chain_tickers.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#qf_lib.data_providers.haver.haver_data_provider.HaverDataProvider.get_futures_chain_tickers" title="qf_lib.data_providers.haver.haver_data_provider.HaverDataProvider.get_futures_chain_tickers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_futures_chain_tickers</span></code></a>(tickers, …)</p></td>
 <td><p>Returns tickers of futures contracts, which belong to the same futures contract chain as the provided ticker (tickers), along with their expiration dates in form of a QFSeries.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.data_providers.haver.haver_data_provider.HaverDataProvider.get_history" title="qf_lib.data_providers.haver.haver_data_provider.HaverDataProvider.get_history"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_history</span></code></a>(tickers, …[, fields])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.data_providers.haver.haver_data_provider.HaverDataProvider.get_history" title="qf_lib.data_providers.haver.haver_data_provider.HaverDataProvider.get_history"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_history</span></code></a>(tickers[, fields, start_date, …])</p></td>
 <td><p>Gets historical fields for Haver tickers.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qf_lib.data_providers.haver.haver_data_provider.HaverDataProvider.price_field_to_str_map" title="qf_lib.data_providers.haver.haver_data_provider.HaverDataProvider.price_field_to_str_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">price_field_to_str_map</span></code></a>(ticker)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qf_lib.data_providers.haver.haver_data_provider.HaverDataProvider.price_field_to_str_map" title="qf_lib.data_providers.haver.haver_data_provider.HaverDataProvider.price_field_to_str_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">price_field_to_str_map</span></code></a>([ticker])</p></td>
 <td><p>Haver stores only end of day figures.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#qf_lib.data_providers.haver.haver_data_provider.HaverDataProvider.supported_ticker_types" title="qf_lib.data_providers.haver.haver_data_provider.HaverDataProvider.supported_ticker_types"><code class="xref py py-obj docutils literal notranslate"><span class="pre">supported_ticker_types</span></code></a>()</p></td>

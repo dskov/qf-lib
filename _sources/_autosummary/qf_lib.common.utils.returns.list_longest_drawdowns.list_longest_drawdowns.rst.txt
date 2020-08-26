@@ -1,4 +1,4 @@
-list_longest_drawdowns
+﻿list_longest_drawdowns
 =========================================================================
 
 .. currentmodule:: qf_lib.common.utils.returns.list_longest_drawdowns

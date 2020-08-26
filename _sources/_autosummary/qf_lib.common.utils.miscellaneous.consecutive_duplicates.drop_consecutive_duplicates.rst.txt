@@ -1,4 +1,4 @@
-drop_consecutive_duplicates
+﻿drop_consecutive_duplicates
 ====================================================================================
 
 .. currentmodule:: qf_lib.common.utils.miscellaneous.consecutive_duplicates

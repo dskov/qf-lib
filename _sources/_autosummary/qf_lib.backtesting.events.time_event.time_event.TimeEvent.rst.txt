@@ -1,4 +1,4 @@
-TimeEvent
+﻿TimeEvent
 =========================================================
 
 .. currentmodule:: qf_lib.backtesting.events.time_event.time_event

@@ -212,6 +212,9 @@
                  <span class="n">tolerance_percentage</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">broker</span><span class="p">,</span> <span class="n">data_handler</span><span class="p">,</span> <span class="n">order_factory</span><span class="p">,</span> <span class="n">contract_ticker_mapper</span><span class="p">)</span>
 
+        <span class="k">assert</span> <span class="n">is_finite_number</span><span class="p">(</span><span class="n">initial_risk</span><span class="p">),</span> <span class="s2">&quot;Initial risk has to be a finite number&quot;</span>
+        <span class="k">assert</span> <span class="n">initial_risk</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Initial risk has to be positive&quot;</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_initial_risk</span> <span class="o">=</span> <span class="n">initial_risk</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_target_percentage</span> <span class="o">=</span> <span class="n">max_target_percentage</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tolerance_percentage</span> <span class="o">=</span> <span class="n">tolerance_percentage</span>
@@ -219,28 +222,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Initial Risk: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">initial_risk</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">_generate_market_orders</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signals</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Signal</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">Order</span><span class="p">]]:</span>
-        <span class="k">assert</span> <span class="n">is_finite_number</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_initial_risk</span><span class="p">),</span> <span class="s2">&quot;Initial risk has to be a finite number&quot;</span>
-
-        <span class="k">def</span> <span class="nf">compute_target_percentage</span><span class="p">(</span><span class="n">signal</span><span class="p">):</span>
-            <span class="k">assert</span> <span class="n">is_finite_number</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">fraction_at_risk</span><span class="p">),</span> <span class="s2">&quot;fraction_at_risk has to be a finite number&quot;</span>
-            <span class="n">target_percentage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initial_risk</span> <span class="o">/</span> <span class="n">signal</span><span class="o">.</span><span class="n">fraction_at_risk</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Target Percentage for </span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">ticker</span><span class="p">,</span> <span class="n">target_percentage</span><span class="p">))</span>
-
-            <span class="n">target_percentage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cap_max_target_percentage</span><span class="p">(</span><span class="n">target_percentage</span><span class="p">)</span>
-
-            <span class="n">target_percentage</span> <span class="o">*=</span> <span class="n">signal</span><span class="o">.</span><span class="n">suggested_exposure</span><span class="o">.</span><span class="n">value</span>  <span class="c1"># preserve the direction (-1, 0 , 1)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Target Percentage considering direction for </span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">ticker</span><span class="p">,</span>
-                                                                                         <span class="n">target_percentage</span><span class="p">))</span>
-
-            <span class="k">assert</span> <span class="n">is_finite_number</span><span class="p">(</span><span class="n">target_percentage</span><span class="p">),</span> <span class="s2">&quot;target_percentage has to be a finite number&quot;</span>
-            <span class="k">return</span> <span class="n">target_percentage</span>
-
-        <span class="k">def</span> <span class="nf">signal_to_contract</span><span class="p">(</span><span class="n">signal</span><span class="p">):</span>
-            <span class="c1"># Map signal to contract</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contract_ticker_mapper</span><span class="o">.</span><span class="n">ticker_to_contract</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">ticker</span><span class="p">)</span>
-
         <span class="n">target_percentages</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="n">signal_to_contract</span><span class="p">(</span><span class="n">signal</span><span class="p">):</span> <span class="n">compute_target_percentage</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span> <span class="k">for</span> <span class="n">signal</span> <span class="ow">in</span> <span class="n">signals</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_signal_to_contract</span><span class="p">(</span><span class="n">signal</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_target_percentage</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span> <span class="k">for</span> <span class="n">signal</span> <span class="ow">in</span> <span class="n">signals</span>
         <span class="p">}</span>
 
         <span class="n">market_order_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_order_factory</span><span class="o">.</span><span class="n">target_percent_orders</span><span class="p">(</span>
@@ -248,6 +231,10 @@
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">market_order_list</span>
+
+    <span class="k">def</span> <span class="nf">_signal_to_contract</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal</span><span class="p">):</span>
+        <span class="c1"># Map signal to contract</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contract_ticker_mapper</span><span class="o">.</span><span class="n">ticker_to_contract</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">ticker</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_cap_max_target_percentage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_target_percentage</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -258,7 +245,21 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Target Percentage: </span><span class="si">{}</span><span class="s2"> above the maximum of </span><span class="si">{}</span><span class="s2">. Setting the target percentage to </span><span class="si">{}</span><span class="s2">&quot;</span>
                              <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">initial_target_percentage</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_target_percentage</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_target_percentage</span><span class="p">))</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_target_percentage</span>
-        <span class="k">return</span> <span class="n">initial_target_percentage</span></div>
+        <span class="k">return</span> <span class="n">initial_target_percentage</span>
+
+    <span class="k">def</span> <span class="nf">_compute_target_percentage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">is_finite_number</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">fraction_at_risk</span><span class="p">),</span> <span class="s2">&quot;fraction_at_risk has to be a finite number&quot;</span>
+        <span class="n">target_percentage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initial_risk</span> <span class="o">/</span> <span class="n">signal</span><span class="o">.</span><span class="n">fraction_at_risk</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Target Percentage for </span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">ticker</span><span class="p">,</span> <span class="n">target_percentage</span><span class="p">))</span>
+
+        <span class="n">target_percentage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cap_max_target_percentage</span><span class="p">(</span><span class="n">target_percentage</span><span class="p">)</span>
+
+        <span class="n">target_percentage</span> <span class="o">*=</span> <span class="n">signal</span><span class="o">.</span><span class="n">suggested_exposure</span><span class="o">.</span><span class="n">value</span>  <span class="c1"># preserve the direction (-1, 0 , 1)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Target Percentage considering direction for </span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">ticker</span><span class="p">,</span>
+                                                                                     <span class="n">target_percentage</span><span class="p">))</span>
+
+        <span class="k">assert</span> <span class="n">is_finite_number</span><span class="p">(</span><span class="n">target_percentage</span><span class="p">),</span> <span class="s2">&quot;target_percentage has to be a finite number&quot;</span>
+        <span class="k">return</span> <span class="n">target_percentage</span></div>
 </pre></div>
 
            </div>

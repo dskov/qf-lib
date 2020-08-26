@@ -1,4 +1,4 @@
-DataHandler
+﻿DataHandler
 ========================================================
 
 .. currentmodule:: qf_lib.backtesting.data_handler.data_handler

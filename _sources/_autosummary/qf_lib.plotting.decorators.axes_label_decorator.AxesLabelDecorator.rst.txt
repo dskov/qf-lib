@@ -1,4 +1,4 @@
-AxesLabelDecorator
+﻿AxesLabelDecorator
 ==================================================================
 
 .. currentmodule:: qf_lib.plotting.decorators.axes_label_decorator

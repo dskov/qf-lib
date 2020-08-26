@@ -1,4 +1,4 @@
-LightBacktestMonitor
+﻿LightBacktestMonitor
 =========================================================================
 
 .. currentmodule:: qf_lib.backtesting.monitoring.light_backtest_monitor

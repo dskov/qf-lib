@@ -1,4 +1,4 @@
-LegendDecorator
+﻿LegendDecorator
 ===========================================================
 
 .. currentmodule:: qf_lib.plotting.decorators.legend_decorator

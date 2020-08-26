@@ -1,4 +1,4 @@
-DataProvider
+﻿DataProvider
 ================================================
 
 .. currentmodule:: qf_lib.data_providers.data_provider

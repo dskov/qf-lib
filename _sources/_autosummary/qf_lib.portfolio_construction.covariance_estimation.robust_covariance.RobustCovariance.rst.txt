@@ -1,4 +1,4 @@
-RobustCovariance
+﻿RobustCovariance
 ======================================================================================
 
 .. currentmodule:: qf_lib.portfolio_construction.covariance_estimation.robust_covariance

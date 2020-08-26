@@ -1,4 +1,4 @@
-volume_weighted_average_price
+﻿volume_weighted_average_price
 =============================================================================================
 
 .. currentmodule:: qf_lib.common.utils.miscellaneous.volume_weighted_average_price

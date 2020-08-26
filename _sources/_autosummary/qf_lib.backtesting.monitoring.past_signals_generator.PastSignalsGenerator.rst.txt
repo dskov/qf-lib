@@ -1,0 +1,9 @@
+﻿PastSignalsGenerator
+=========================================================================
+
+.. currentmodule:: qf_lib.backtesting.monitoring.past_signals_generator
+
+.. autoclass:: PastSignalsGenerator
+	:show-inheritance:
+	:autosummary:
+	:members:

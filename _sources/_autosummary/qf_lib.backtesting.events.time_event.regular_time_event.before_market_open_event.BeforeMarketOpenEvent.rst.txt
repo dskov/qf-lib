@@ -1,4 +1,4 @@
-BeforeMarketOpenEvent
+﻿BeforeMarketOpenEvent
 ======================================================================================================
 
 .. currentmodule:: qf_lib.backtesting.events.time_event.regular_time_event.before_market_open_event

@@ -1,4 +1,4 @@
-UnderwaterChart
+﻿UnderwaterChart
 =======================================================
 
 .. currentmodule:: qf_lib.plotting.charts.underwater_chart

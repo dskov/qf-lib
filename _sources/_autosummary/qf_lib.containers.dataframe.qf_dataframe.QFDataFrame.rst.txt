@@ -1,4 +1,4 @@
-QFDataFrame
+﻿QFDataFrame
 ====================================================
 
 .. currentmodule:: qf_lib.containers.dataframe.qf_dataframe

@@ -1,4 +1,4 @@
-MarketStressIndicator
+﻿MarketStressIndicator
 ==================================================================
 
 .. currentmodule:: qf_lib.indicators.market_stress_indicator_us
